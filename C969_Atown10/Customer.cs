@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace C969_Atown10
 {
-    internal class Customer : BaseClass
+    public class Customer : BaseClass
     {
         public string CustomerName { get; set; }
         public Address Address { get; set; }
