@@ -9,22 +9,8 @@ namespace C969_Atown10
     public class Customer : BaseClass
     {
         public string CustomerName { get; set; }
-        public Address Address { get; set; }
+        public int AddressId { get; set; }
         public bool Active { get; set; }
-        
-        public void Add()
-        {
 
-        }
-
-        public void Update() 
-        { 
-
-        }
-
-        public void Delete()
-        {
-
-        }
     }
 }

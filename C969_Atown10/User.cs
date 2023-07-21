@@ -11,16 +11,5 @@ namespace C969_Atown10
         public string UserName { get; set; }
         public string Password { get; set; }
         public bool Active { get; set; }
-        
-
-        public void Login()
-        {
-
-        }
-
-        public void Logout() 
-        { 
-        
-        }
     }
 }

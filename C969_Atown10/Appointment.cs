@@ -8,8 +8,8 @@ namespace C969_Atown10
 {
     public class Appointment : BaseClass
     {
-        public Customer Customer { get; set; }
-        public User User { get; set; }
+        public int CustomerId { get; set; }
+        public int UserId { get; set; }
         public string Title { get; set; }
         public string Description { get; set; } 
         public string Location { get; set; }
@@ -18,20 +18,5 @@ namespace C969_Atown10
         public string Url { get; set; }
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
-        
-        public void Add() 
-        {
-            
-        }
-
-        public void Update() 
-        { 
-
-        }
-
-        public void Delete()
-        {
-
-        }
     }
 }
