@@ -34,14 +34,19 @@ namespace C969_Atown10
                 command.Parameters.AddWithValue("@Id", id);
                 MySqlDataReader reader = command.ExecuteReader();
 
+                CityService cityService = new CityService();  
+
                 if (reader.Read())
                 {
+                    int cityId = Convert.ToInt32(reader["cityId"]);
+                    City city = cityService.GetCity(cityId);
+
                     address = new Address()
                     {
                         Id = Convert.ToInt32(reader["addressId"]),
                         AddressLine1 = reader["address"].ToString(),
                         AddressLine2 = reader["address2"].ToString(),
-                        CityId = Convert.ToInt32(reader["cityId"]),
+                        City = city,
                         PostalCode = reader["postalCode"].ToString(),
                         Phone = reader["phone"].ToString(),
                         CreatedDate = Convert.ToDateTime(reader["createDate"]),
@@ -66,14 +71,19 @@ namespace C969_Atown10
                 MySqlCommand command = new MySqlCommand(sql, connection);
                 MySqlDataReader reader = command.ExecuteReader();
 
+                CityService cityService = new CityService();
+
                 while (reader.Read())
                 {
+                    int cityId = Convert.ToInt32(reader["cityId"]);
+                    City city = cityService.GetCity(cityId);
+
                     Address address = new Address()
                     {
                         Id = Convert.ToInt32(reader["addressId"]),
                         AddressLine1 = reader["address"].ToString(),
                         AddressLine2 = reader["address2"].ToString(),
-                        CityId = Convert.ToInt32(reader["cityId"]),
+                        City = city,
                         PostalCode = reader["postalCode"].ToString(),
                         Phone = reader["phone"].ToString(),
                         CreatedDate = Convert.ToDateTime(reader["createDate"]),
@@ -88,9 +98,9 @@ namespace C969_Atown10
             return addresses;
         }
 
-        public void AddAddress(Address address)
+        public int AddAddress(Address address)
         {
-            string sql = "INSERT INTO Address (address, address2, cityId, postalCode, phone, createDate, createdBy, lastUpdate, lastUpdateBy) VALUES (@Address1, @Address2, @CityId, @PostalCode, @Phone, @CreateDate, @CreatedBy, @LastUpdate, @LastUpdatedBy)";
+            string sql = "INSERT INTO Address (address, address2, cityId, postalCode, phone, createDate, createdBy, lastUpdate, lastUpdateBy) VALUES (@Address1, @Address2, @CityId, @PostalCode, @Phone, @CreateDate, @CreatedBy, @LastUpdate, @LastUpdatedBy); SELECT LAST_INSERT_ID();";
 
             using (var connection = GetConnection())
             {
@@ -99,7 +109,7 @@ namespace C969_Atown10
 
                 command.Parameters.AddWithValue("@Address1", address.AddressLine1);
                 command.Parameters.AddWithValue("@Address2", address.AddressLine2);
-                command.Parameters.AddWithValue("@CityId", address.CityId);
+                command.Parameters.AddWithValue("@CityId", address.City.Id);
                 command.Parameters.AddWithValue("@PostalCode", address.PostalCode);
                 command.Parameters.AddWithValue("@Phone", address.Phone);
                 command.Parameters.AddWithValue("@CreateDate", address.CreatedDate);
@@ -107,7 +117,7 @@ namespace C969_Atown10
                 command.Parameters.AddWithValue("@LastUpdate", address.LastUpdate);
                 command.Parameters.AddWithValue("@LastUpdatedBy", address.LastUpdatedBy);
 
-                command.ExecuteNonQuery();
+                return Convert.ToInt32(command.ExecuteScalar());
             }
         }
 
@@ -116,23 +126,23 @@ namespace C969_Atown10
             string sql = "UPDATE Address SET address = @Address1, address2 = @Address2, cityId = @CityId, postalCode = @PostalCode, phone = @Phone, createDate = @CreateDate, createdBy = @CreatedBy, lastUpdate = @LastUpdate, lastUpdateBy = @LastUpdatedBy WHERE addressId = @Id";
 
             using (var connection = GetConnection())
-            {
-                connection.Open();
-                MySqlCommand command = new MySqlCommand(sql, connection);
+                {
+                    connection.Open();
+                    MySqlCommand command = new MySqlCommand(sql, connection);
 
-                command.Parameters.AddWithValue("@Id", address.Id);
-                command.Parameters.AddWithValue("@Address1", address.AddressLine1);
-                command.Parameters.AddWithValue("@Address2", address.AddressLine2);
-                command.Parameters.AddWithValue("@CityId", address.CityId);
-                command.Parameters.AddWithValue("@PostalCode", address.PostalCode);
-                command.Parameters.AddWithValue("@Phone", address.Phone);
-                command.Parameters.AddWithValue("@CreateDate", address.CreatedDate);
-                command.Parameters.AddWithValue("@CreatedBy", address.CreatedBy);
-                command.Parameters.AddWithValue("@LastUpdate", address.LastUpdate);
-                command.Parameters.AddWithValue("@LastUpdatedBy", address.LastUpdatedBy);
+                    command.Parameters.AddWithValue("@Id", address.Id);
+                    command.Parameters.AddWithValue("@Address1", address.AddressLine1);
+                    command.Parameters.AddWithValue("@Address2", address.AddressLine2);
+                    command.Parameters.AddWithValue("@CityId", address.City.Id);
+                    command.Parameters.AddWithValue("@PostalCode", address.PostalCode);
+                    command.Parameters.AddWithValue("@Phone", address.Phone);
+                    command.Parameters.AddWithValue("@CreateDate", address.CreatedDate);
+                    command.Parameters.AddWithValue("@CreatedBy", address.CreatedBy);
+                    command.Parameters.AddWithValue("@LastUpdate", address.LastUpdate);
+                    command.Parameters.AddWithValue("@LastUpdatedBy", address.LastUpdatedBy);
 
-                command.ExecuteNonQuery();
-            }
+                    command.ExecuteNonQuery();
+                }
         }
 
         public void DeleteAddress(int id)

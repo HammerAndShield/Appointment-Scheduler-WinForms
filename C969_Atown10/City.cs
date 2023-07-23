@@ -9,6 +9,6 @@ namespace C969_Atown10
     public class City : BaseClass
     {
         public string CityName { get; set; }
-        public int CountryId { get; set; }
+        public Country Country { get; set; }
     }
 }

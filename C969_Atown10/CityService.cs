@@ -30,17 +30,20 @@ namespace C969_Atown10
             using (var connection = GetConnection())
             {
                 connection.Open();
-                MySqlCommand command = new MySqlCommand( sql, connection );
+                MySqlCommand command = new MySqlCommand(sql, connection);
                 command.Parameters.AddWithValue("@Id", id);
                 MySqlDataReader reader = command.ExecuteReader();
 
                 if (reader.Read())
-                {
+                {                   
+                    CountryService countryService = new CountryService();                    
+                    Country country = countryService.GetCountry(Convert.ToInt32(reader["countryId"]));
+
                     city = new City()
                     {
                         Id = Convert.ToInt32(reader["cityId"]),
                         CityName = reader["city"].ToString(),
-                        CountryId = Convert.ToInt32(reader["countryId"]),
+                        Country = country,
                         CreatedDate = Convert.ToDateTime(reader["createDate"]),
                         CreatedBy = reader["createdBy"].ToString(),
                         LastUpdate = Convert.ToDateTime(reader["lastUpdate"]),
@@ -50,6 +53,39 @@ namespace C969_Atown10
 
                 return city;
             }
+        }
+
+        public City GetCityByName(string cityName)
+        {
+            City city = null;
+            string sql = "SELECT * FROM City WHERE city = @CityName";
+
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+                MySqlCommand command = new MySqlCommand(sql, connection);
+                command.Parameters.AddWithValue("@CityName", cityName);
+                MySqlDataReader reader = command.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    CountryService countryService = new CountryService();
+                    Country country = countryService.GetCountry(Convert.ToInt32(reader["countryId"]));
+
+                    city = new City()
+                    {
+                        Id = Convert.ToInt32(reader["cityId"]),
+                        CityName = reader["city"].ToString(),
+                        Country = country,
+                        CreatedDate = Convert.ToDateTime(reader["createDate"]),
+                        CreatedBy = reader["createdBy"].ToString(),
+                        LastUpdate = Convert.ToDateTime(reader["lastUpdate"]),
+                        LastUpdatedBy = reader["lastUpdateBy"].ToString()
+                    };
+                }
+            }
+
+            return city;
         }
 
         public List<City> GetAllCities() 
@@ -65,11 +101,14 @@ namespace C969_Atown10
 
                 while (reader.Read())
                 {
+                    CountryService countryService = new CountryService();
+                    Country country = countryService.GetCountry(Convert.ToInt32(reader["countryId"]));
+
                     City city = new City()
                     {
                         Id = Convert.ToInt32(reader["cityId"]),
                         CityName = reader["city"].ToString(),
-                        CountryId = Convert.ToInt32(reader["countryId"]),
+                        Country = country,
                         CreatedDate = Convert.ToDateTime(reader["createDate"]),
                         CreatedBy = reader["createdBy"].ToString(),
                         LastUpdate = Convert.ToDateTime(reader["lastUpdate"]),
@@ -83,23 +122,37 @@ namespace C969_Atown10
             return cities;
         }
 
-        public void AddCity (City city)
+        public int AddCity(City city)
         {
-            string sql = "INSERT INTO City (city, countryId, createDate, createdBy, lasteUpdate, lastUpdateBy) VALUES (@CityName, @CountryId, @CreateDate, @CreatedBy, @LastUpdate, @LastUpdatedBy)";
+            string sqlCheck = "SELECT cityId FROM City WHERE city = @CityName";
+            string sqlInsert = "INSERT INTO City (city, countryId, createDate, createdBy, lastUpdate, lastUpdateBy) VALUES (@CityName, @CountryId, @CreateDate, @CreatedBy, @LastUpdate, @LastUpdatedBy); SELECT LAST_INSERT_ID();";
 
             using (var connection = GetConnection())
             {
                 connection.Open();
-                MySqlCommand command = new MySqlCommand(sql, connection);
+                MySqlCommand command = new MySqlCommand(sqlCheck, connection);
 
                 command.Parameters.AddWithValue("@CityName", city.CityName);
-                command.Parameters.AddWithValue("@CountryId", city.CountryId);
-                command.Parameters.AddWithValue("@CreateDate", city.CreatedDate);
-                command.Parameters.AddWithValue("@CreatedBy", city.CreatedBy);
-                command.Parameters.AddWithValue("@LastUpdate", city.LastUpdate);
-                command.Parameters.AddWithValue("@LastUpdatedBy", city.LastUpdatedBy);
 
-                command.ExecuteNonQuery();
+                object result = command.ExecuteScalar();
+
+                if (result != null)
+                {
+                    // City already exists, return its ID
+                    return Convert.ToInt32(result);
+                }
+                else
+                {
+                    // City does not exist, insert new city
+                    command.CommandText = sqlInsert;
+                    command.Parameters.AddWithValue("@CountryId", city.Country.Id);
+                    command.Parameters.AddWithValue("@CreateDate", city.CreatedDate);
+                    command.Parameters.AddWithValue("@CreatedBy", city.CreatedBy);
+                    command.Parameters.AddWithValue("@LastUpdate", city.LastUpdate);
+                    command.Parameters.AddWithValue("@LastUpdatedBy", city.LastUpdatedBy);
+
+                    return Convert.ToInt32(command.ExecuteScalar());
+                }
             }
         }
 
@@ -114,7 +167,7 @@ namespace C969_Atown10
 
                 command.Parameters.AddWithValue("@Id", city.Id);
                 command.Parameters.AddWithValue("@CityName", city.CityName);
-                command.Parameters.AddWithValue("@CountryId", city.CountryId);
+                command.Parameters.AddWithValue("@CountryId", city.Country.Id);
                 command.Parameters.AddWithValue("@CreateDate", city.CreatedDate);
                 command.Parameters.AddWithValue("@CreatedBy", city.CreatedBy);
                 command.Parameters.AddWithValue("@LastUpdate", city.LastUpdate);

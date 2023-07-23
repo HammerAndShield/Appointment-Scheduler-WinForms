@@ -173,6 +173,11 @@ namespace C969_Atown10
                     };
                 }
 
+                if (user == null)
+                {
+                    throw new Exception("User not found.");
+                }
+
                 return user;
 
             }
