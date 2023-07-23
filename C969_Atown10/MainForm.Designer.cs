@@ -78,7 +78,7 @@
             this.dateTimePickerStartAppointment = new System.Windows.Forms.DateTimePicker();
             this.labelEndAppointment = new System.Windows.Forms.Label();
             this.labelStartAppointment = new System.Windows.Forms.Label();
-            this.textBox5 = new System.Windows.Forms.TextBox();
+            this.textBoxURLAppointment = new System.Windows.Forms.TextBox();
             this.labelUrlAppointment = new System.Windows.Forms.Label();
             this.textBoxTypeAppointment = new System.Windows.Forms.TextBox();
             this.labelTypeAppointment = new System.Windows.Forms.Label();
@@ -90,10 +90,10 @@
             this.labelDescriptionAppointment = new System.Windows.Forms.Label();
             this.textBoxTitleAppointment = new System.Windows.Forms.TextBox();
             this.labelTitleAppointment = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.labelUserIdAppointment = new System.Windows.Forms.Label();
+            this.textBoxUserAppointments = new System.Windows.Forms.TextBox();
+            this.labelUserAppointment = new System.Windows.Forms.Label();
             this.textBoxCustomerIdAppointment = new System.Windows.Forms.TextBox();
-            this.labelCustomerIdAppointment = new System.Windows.Forms.Label();
+            this.labelCustomerAppointment = new System.Windows.Forms.Label();
             this.listViewAppointments = new System.Windows.Forms.ListView();
             this.labelAppointmentList = new System.Windows.Forms.Label();
             this.tabPageCalendarView = new System.Windows.Forms.TabPage();
@@ -557,7 +557,7 @@
             this.groupBoxAppointmentDetails.Controls.Add(this.dateTimePickerStartAppointment);
             this.groupBoxAppointmentDetails.Controls.Add(this.labelEndAppointment);
             this.groupBoxAppointmentDetails.Controls.Add(this.labelStartAppointment);
-            this.groupBoxAppointmentDetails.Controls.Add(this.textBox5);
+            this.groupBoxAppointmentDetails.Controls.Add(this.textBoxURLAppointment);
             this.groupBoxAppointmentDetails.Controls.Add(this.labelUrlAppointment);
             this.groupBoxAppointmentDetails.Controls.Add(this.textBoxTypeAppointment);
             this.groupBoxAppointmentDetails.Controls.Add(this.labelTypeAppointment);
@@ -569,10 +569,10 @@
             this.groupBoxAppointmentDetails.Controls.Add(this.labelDescriptionAppointment);
             this.groupBoxAppointmentDetails.Controls.Add(this.textBoxTitleAppointment);
             this.groupBoxAppointmentDetails.Controls.Add(this.labelTitleAppointment);
-            this.groupBoxAppointmentDetails.Controls.Add(this.textBox1);
-            this.groupBoxAppointmentDetails.Controls.Add(this.labelUserIdAppointment);
+            this.groupBoxAppointmentDetails.Controls.Add(this.textBoxUserAppointments);
+            this.groupBoxAppointmentDetails.Controls.Add(this.labelUserAppointment);
             this.groupBoxAppointmentDetails.Controls.Add(this.textBoxCustomerIdAppointment);
-            this.groupBoxAppointmentDetails.Controls.Add(this.labelCustomerIdAppointment);
+            this.groupBoxAppointmentDetails.Controls.Add(this.labelCustomerAppointment);
             this.groupBoxAppointmentDetails.Location = new System.Drawing.Point(10, 598);
             this.groupBoxAppointmentDetails.Name = "groupBoxAppointmentDetails";
             this.groupBoxAppointmentDetails.Size = new System.Drawing.Size(767, 226);
@@ -614,12 +614,12 @@
             this.labelStartAppointment.TabIndex = 20;
             this.labelStartAppointment.Text = "Start:";
             // 
-            // textBox5
+            // textBoxURLAppointment
             // 
-            this.textBox5.Location = new System.Drawing.Point(521, 99);
-            this.textBox5.Name = "textBox5";
-            this.textBox5.Size = new System.Drawing.Size(228, 22);
-            this.textBox5.TabIndex = 19;
+            this.textBoxURLAppointment.Location = new System.Drawing.Point(521, 99);
+            this.textBoxURLAppointment.Name = "textBoxURLAppointment";
+            this.textBoxURLAppointment.Size = new System.Drawing.Size(228, 22);
+            this.textBoxURLAppointment.TabIndex = 19;
             // 
             // labelUrlAppointment
             // 
@@ -716,22 +716,22 @@
             this.labelTitleAppointment.TabIndex = 8;
             this.labelTitleAppointment.Text = "Title:";
             // 
-            // textBox1
+            // textBoxUserAppointments
             // 
-            this.textBox1.Location = new System.Drawing.Point(153, 58);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(228, 22);
-            this.textBox1.TabIndex = 7;
+            this.textBoxUserAppointments.Location = new System.Drawing.Point(153, 58);
+            this.textBoxUserAppointments.Name = "textBoxUserAppointments";
+            this.textBoxUserAppointments.Size = new System.Drawing.Size(228, 22);
+            this.textBoxUserAppointments.TabIndex = 7;
             // 
-            // labelUserIdAppointment
+            // labelUserAppointment
             // 
-            this.labelUserIdAppointment.AutoSize = true;
-            this.labelUserIdAppointment.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelUserIdAppointment.Location = new System.Drawing.Point(72, 58);
-            this.labelUserIdAppointment.Name = "labelUserIdAppointment";
-            this.labelUserIdAppointment.Size = new System.Drawing.Size(75, 22);
-            this.labelUserIdAppointment.TabIndex = 6;
-            this.labelUserIdAppointment.Text = "User ID:";
+            this.labelUserAppointment.AutoSize = true;
+            this.labelUserAppointment.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelUserAppointment.Location = new System.Drawing.Point(94, 58);
+            this.labelUserAppointment.Name = "labelUserAppointment";
+            this.labelUserAppointment.Size = new System.Drawing.Size(53, 22);
+            this.labelUserAppointment.TabIndex = 6;
+            this.labelUserAppointment.Text = "User:";
             // 
             // textBoxCustomerIdAppointment
             // 
@@ -740,15 +740,15 @@
             this.textBoxCustomerIdAppointment.Size = new System.Drawing.Size(228, 22);
             this.textBoxCustomerIdAppointment.TabIndex = 5;
             // 
-            // labelCustomerIdAppointment
+            // labelCustomerAppointment
             // 
-            this.labelCustomerIdAppointment.AutoSize = true;
-            this.labelCustomerIdAppointment.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelCustomerIdAppointment.Location = new System.Drawing.Point(36, 21);
-            this.labelCustomerIdAppointment.Name = "labelCustomerIdAppointment";
-            this.labelCustomerIdAppointment.Size = new System.Drawing.Size(114, 22);
-            this.labelCustomerIdAppointment.TabIndex = 4;
-            this.labelCustomerIdAppointment.Text = "Customer ID:";
+            this.labelCustomerAppointment.AutoSize = true;
+            this.labelCustomerAppointment.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelCustomerAppointment.Location = new System.Drawing.Point(55, 21);
+            this.labelCustomerAppointment.Name = "labelCustomerAppointment";
+            this.labelCustomerAppointment.Size = new System.Drawing.Size(92, 22);
+            this.labelCustomerAppointment.TabIndex = 4;
+            this.labelCustomerAppointment.Text = "Customer:";
             // 
             // listViewAppointments
             // 
@@ -1002,13 +1002,13 @@
         private System.Windows.Forms.Button buttonDeleteAppointment;
         private System.Windows.Forms.Button buttonUpdateAppointment;
         private System.Windows.Forms.Button buttonAddAppointment;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Label labelUserIdAppointment;
+        private System.Windows.Forms.TextBox textBoxUserAppointments;
+        private System.Windows.Forms.Label labelUserAppointment;
         private System.Windows.Forms.TextBox textBoxCustomerIdAppointment;
-        private System.Windows.Forms.Label labelCustomerIdAppointment;
+        private System.Windows.Forms.Label labelCustomerAppointment;
         private System.Windows.Forms.Label labelEndAppointment;
         private System.Windows.Forms.Label labelStartAppointment;
-        private System.Windows.Forms.TextBox textBox5;
+        private System.Windows.Forms.TextBox textBoxURLAppointment;
         private System.Windows.Forms.Label labelUrlAppointment;
         private System.Windows.Forms.TextBox textBoxTypeAppointment;
         private System.Windows.Forms.Label labelTypeAppointment;

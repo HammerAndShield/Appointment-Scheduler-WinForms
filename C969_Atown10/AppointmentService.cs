@@ -11,15 +11,40 @@ namespace C969_Atown10
     public class AppointmentService
     {
         private string _connectionString;
+        private CustomerService _customerService = new CustomerService();
 
         public AppointmentService()
         {
             _connectionString = "Server=127.0.0.1;Port=3306;Username=sqlUser;Password=Passw0rd!;Database=client_schedule";
         }
 
+        private TimeZoneInfo UserTimeZone => TimeZoneInfo.Local;  //Lambda expression to get the users local timezone and set it to the UserTimeZone variable.
+        //It was by far the easiest to do this as a lambda expression instead of a normal method, because it could be done in one line with minimal code.
+        //We also do not need to call this method specifically, we just need the information saved in the variable.
+
         private MySqlConnection GetConnection()
         {
             return new MySqlConnection(_connectionString);
+        }
+
+        private bool IsDuringBusinessHours(DateTime start, DateTime end)
+        {
+            var startHour = TimeZoneInfo.ConvertTimeFromUtc(start, UserTimeZone).Hour;
+            var endHour = TimeZoneInfo.ConvertTimeFromUtc(end, UserTimeZone).Hour;
+            return startHour >= 9 && endHour <= 17;
+        }
+
+        private bool HasOverlappingAppointments(Appointment newAppointment)
+        {
+            var appointments = GetAllAppointments().Where(a => a.UserId == newAppointment.UserId);
+            return appointments.Any(a => // Using a lambda function here with the linq "Any" method is the quickest way to search through the Appointments list.
+                (newAppointment.Start >= a.Start && newAppointment.Start < a.End) || // Using a lambda here allows us to quickly iterate through the list without having to write a loop.
+                (newAppointment.End > a.Start && newAppointment.End <= a.End)); 
+        }
+
+        private bool CustomerExists(int customerId)
+        {
+            return _customerService.GetCustomer(customerId) != null;
         }
 
         public Appointment GetAppointment(int id)
@@ -56,6 +81,9 @@ namespace C969_Atown10
                     };
                 }
 
+                appointment.Start = TimeZoneInfo.ConvertTimeFromUtc(appointment.Start, UserTimeZone);
+                appointment.End = TimeZoneInfo.ConvertTimeFromUtc(appointment.End, UserTimeZone);
+
                 return appointment;
             }
         }
@@ -90,7 +118,11 @@ namespace C969_Atown10
                         CreatedBy = reader["createdBy"].ToString(),
                         LastUpdate = Convert.ToDateTime(reader["lastUpdate"]),
                         LastUpdatedBy = reader["lastUpdateBy"].ToString()
+                        
                     };
+
+                    appointment.Start = TimeZoneInfo.ConvertTimeFromUtc(appointment.Start, UserTimeZone);
+                    appointment.End = TimeZoneInfo.ConvertTimeFromUtc(appointment.End, UserTimeZone);
 
                     appointments.Add(appointment);
                 }
@@ -101,6 +133,18 @@ namespace C969_Atown10
 
         public void AddAppointment(Appointment appointment)
         {
+            if (!CustomerExists(appointment.CustomerId))
+                throw new Exception("The customer does not exist.");
+
+            if (!IsDuringBusinessHours(appointment.Start, appointment.End))
+                throw new Exception("The appointment is not during business hours.");
+
+            if (HasOverlappingAppointments(appointment))
+                throw new Exception("The appointment overlaps with other appointments.");
+
+            appointment.Start = TimeZoneInfo.ConvertTimeToUtc(appointment.Start, UserTimeZone);
+            appointment.End = TimeZoneInfo.ConvertTimeToUtc(appointment.End, UserTimeZone);
+
             string sql = "INSERT INTO Appointment (customerId, userId, title, description, location, contact, type, url, start, end, createDate, createdBy, lastUpdate, lastUpdateBy) " +
             "VALUES (@CustomerId, @UserId, @Title, @Description, @Location, @Contact, @Type, @Url, @Start, @End, @CreateDate, @CreatedBy, @LastUpdate, @LastUpdatedBy)";
 
@@ -130,6 +174,18 @@ namespace C969_Atown10
 
         public void UpdateAppointment(Appointment appointment)
         {
+            if (!CustomerExists(appointment.CustomerId))
+                throw new Exception("The customer does not exist.");
+
+            if (!IsDuringBusinessHours(appointment.Start, appointment.End))
+                throw new Exception("The appointment is not during business hours.");
+
+            if (HasOverlappingAppointments(appointment))
+                throw new Exception("The appointment overlaps with other appointments.");
+
+            appointment.Start = TimeZoneInfo.ConvertTimeToUtc(appointment.Start, UserTimeZone);
+            appointment.End = TimeZoneInfo.ConvertTimeToUtc(appointment.End, UserTimeZone);
+
             string sql = "UPDATE Appointment SET customerId = @CustomerId, userId = @UserId, title = @Title, description = @Description, location = @Location, " +
             "contact = @Contact, type = @Type, url = @Url, start = @Start, end = @End, createDate = @CreateDate, createdBy = @CreatedBy, lastUpdate = @LastUpdate, lastUpdateBy = @LastUpdatedBy " +
             "WHERE appointmentId = @Id";
