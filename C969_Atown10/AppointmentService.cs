@@ -19,10 +19,6 @@ namespace C969_Atown10
             _connectionString = "Server=127.0.0.1;Port=3306;Username=sqlUser;Password=Passw0rd!;Database=client_schedule";
         }
 
-        private TimeZoneInfo UserTimeZone => TimeZoneInfo.Local;  //Lambda expression to get the users local timezone and set it to the UserTimeZone variable.
-        //It was by far the easiest to do this as a lambda expression instead of a normal method, because it could be done in one line with minimal code.
-        //We also do not need to call this method specifically, we just need the information saved in the variable.
-
         private MySqlConnection GetConnection()
         {
             return new MySqlConnection(_connectionString);
@@ -35,19 +31,35 @@ namespace C969_Atown10
 
             Console.WriteLine($"Start Hour: {startHour}, End Hour: {endHour}");
 
-            return startHour >= 9 && endHour < 18;
+            return startHour >= 9 && startHour < 17 && endHour < 18;
         }
 
         private bool HasOverlappingAppointments(Appointment newAppointment)
         {
-            var appointments = GetAllAppointments().Where(a => a.User.Id == newAppointment.User.Id);
+            var appointments = GetAllAppointments().Where(a => a.User.Id == newAppointment.User.Id);// Using a lambda here with the linq "Where" function is the easiest way to build a list 
+            //of appointments relating to a single user.  It provides both the fastest way to do it with the least amount of code, justifying the use of the lambda function.
+
             return appointments.Any(a => // Using a lambda function here with the linq "Any" method is the quickest way to search through the Appointments list.
                 (newAppointment.Start >= a.Start && newAppointment.Start < a.End) || // Using a lambda here allows us to quickly iterate through the list without having to write a loop.
                 (newAppointment.End > a.Start && newAppointment.End <= a.End)); 
         }
 
+        private bool HasOverlappingAppointments(Appointment newAppointment, int updatingAppointmentId = -1)
+        {
+            //Overloaded version of the method to be used in updating appointments.
+            var appointments = GetAllAppointments()
+                .Where(a => a.User.Id == newAppointment.User.Id && a.Id != updatingAppointmentId);
+
+            return appointments.Any(a =>
+                (newAppointment.Start >= a.Start && newAppointment.Start < a.End) ||
+                (newAppointment.End > a.Start && newAppointment.End <= a.End));
+        }
+
         private bool CustomerExists(Customer customer)
         {
+            if (customer == null)
+                return false;
+
             return _customerService.GetCustomer(customer.Id) != null;
         }
 
@@ -129,6 +141,20 @@ namespace C969_Atown10
             return appointments;
         }
 
+        public List<Appointment> GetAppointmentsByWeek(DateTime startOfWeek, DateTime endOfWeek)
+        {
+            return GetAllAppointments()
+                .Where(a => a.Start.Date >= startOfWeek && a.Start.Date <= endOfWeek)
+                .ToList();
+        }
+
+        public List<Appointment> GetAppointmentsByMonth(DateTime startOfMonth, DateTime endOfMonth)
+        {
+            return GetAllAppointments()
+                .Where(a => a.Start.Date >= startOfMonth && a.Start.Date <= endOfMonth)
+                .ToList();
+        }
+
         public void AddAppointment(Appointment appointment)
         {
             if (!CustomerExists(appointment.Customer))
@@ -175,11 +201,8 @@ namespace C969_Atown10
             if (!IsDuringBusinessHours(appointment.Start, appointment.End))
                 throw new Exception("The appointment is not during business hours.");
 
-            if (HasOverlappingAppointments(appointment))
+            if (HasOverlappingAppointments(appointment, appointment.Id))
                 throw new Exception("The appointment overlaps with other appointments.");
-
-            appointment.Start = TimeZoneInfo.ConvertTimeToUtc(appointment.Start, UserTimeZone);
-            appointment.End = TimeZoneInfo.ConvertTimeToUtc(appointment.End, UserTimeZone);
 
             string sql = "UPDATE Appointment SET customerId = @CustomerId, userId = @UserId, title = @Title, description = @Description, location = @Location, " +
             "contact = @Contact, type = @Type, url = @Url, start = @Start, end = @End, createDate = @CreateDate, createdBy = @CreatedBy, lastUpdate = @LastUpdate, lastUpdateBy = @LastUpdatedBy " +

@@ -99,7 +99,7 @@
             this.monthCalendar = new System.Windows.Forms.MonthCalendar();
             this.groupBoxViewSelection = new System.Windows.Forms.GroupBox();
             this.radioButtonWeekView = new System.Windows.Forms.RadioButton();
-            this.radioButtonMothView = new System.Windows.Forms.RadioButton();
+            this.radioButtonMonthView = new System.Windows.Forms.RadioButton();
             this.labelCalendarView = new System.Windows.Forms.Label();
             this.tabPageReports = new System.Windows.Forms.TabPage();
             this.buttonGenerateReport = new System.Windows.Forms.Button();
@@ -799,9 +799,9 @@
             // listViewAppointmentsCalendar
             // 
             this.listViewAppointmentsCalendar.HideSelection = false;
-            this.listViewAppointmentsCalendar.Location = new System.Drawing.Point(160, 316);
+            this.listViewAppointmentsCalendar.Location = new System.Drawing.Point(7, 316);
             this.listViewAppointmentsCalendar.Name = "listViewAppointmentsCalendar";
-            this.listViewAppointmentsCalendar.Size = new System.Drawing.Size(794, 314);
+            this.listViewAppointmentsCalendar.Size = new System.Drawing.Size(1112, 452);
             this.listViewAppointmentsCalendar.TabIndex = 6;
             this.listViewAppointmentsCalendar.UseCompatibleStateImageBehavior = false;
             // 
@@ -811,11 +811,12 @@
             this.monthCalendar.Location = new System.Drawing.Point(160, 72);
             this.monthCalendar.Name = "monthCalendar";
             this.monthCalendar.TabIndex = 5;
+            this.monthCalendar.DateChanged += new System.Windows.Forms.DateRangeEventHandler(this.monthCalendar_DateChanged);
             // 
             // groupBoxViewSelection
             // 
             this.groupBoxViewSelection.Controls.Add(this.radioButtonWeekView);
-            this.groupBoxViewSelection.Controls.Add(this.radioButtonMothView);
+            this.groupBoxViewSelection.Controls.Add(this.radioButtonMonthView);
             this.groupBoxViewSelection.Location = new System.Drawing.Point(376, 3);
             this.groupBoxViewSelection.Name = "groupBoxViewSelection";
             this.groupBoxViewSelection.Size = new System.Drawing.Size(393, 39);
@@ -833,17 +834,19 @@
             this.radioButtonWeekView.TabStop = true;
             this.radioButtonWeekView.Text = "Week View";
             this.radioButtonWeekView.UseVisualStyleBackColor = true;
+            this.radioButtonWeekView.CheckedChanged += new System.EventHandler(this.radioButtonWeekView_CheckedChanged);
             // 
-            // radioButtonMothView
+            // radioButtonMonthView
             // 
-            this.radioButtonMothView.AutoSize = true;
-            this.radioButtonMothView.Location = new System.Drawing.Point(76, 13);
-            this.radioButtonMothView.Name = "radioButtonMothView";
-            this.radioButtonMothView.Size = new System.Drawing.Size(96, 20);
-            this.radioButtonMothView.TabIndex = 0;
-            this.radioButtonMothView.TabStop = true;
-            this.radioButtonMothView.Text = "Month View";
-            this.radioButtonMothView.UseVisualStyleBackColor = true;
+            this.radioButtonMonthView.AutoSize = true;
+            this.radioButtonMonthView.Location = new System.Drawing.Point(76, 13);
+            this.radioButtonMonthView.Name = "radioButtonMonthView";
+            this.radioButtonMonthView.Size = new System.Drawing.Size(96, 20);
+            this.radioButtonMonthView.TabIndex = 0;
+            this.radioButtonMonthView.TabStop = true;
+            this.radioButtonMonthView.Text = "Month View";
+            this.radioButtonMonthView.UseVisualStyleBackColor = true;
+            this.radioButtonMonthView.CheckedChanged += new System.EventHandler(this.radioButtonMonthView_CheckedChanged);
             // 
             // labelCalendarView
             // 
@@ -1091,7 +1094,7 @@
         private System.Windows.Forms.Label labelCalendarView;
         private System.Windows.Forms.GroupBox groupBoxViewSelection;
         private System.Windows.Forms.RadioButton radioButtonWeekView;
-        private System.Windows.Forms.RadioButton radioButtonMothView;
+        private System.Windows.Forms.RadioButton radioButtonMonthView;
         private System.Windows.Forms.ListView listViewAppointmentsCalendar;
         private System.Windows.Forms.MonthCalendar monthCalendar;
         private System.Windows.Forms.DataGridView dataGridViewReport;

@@ -158,8 +158,8 @@ namespace C969_Atown10
                 textBoxContactAppointment.Text = appointment.Contact;
                 textBoxTypeAppointment.Text = appointment.Type;
                 textBoxURLAppointment.Text = appointment.Url;
-                dateTimePickerStartAppointment.Value = appointment.Start;
-                dateTimePickerEndAppointment.Value = appointment.End;
+                dateTimePickerStartAppointment.Value = TimeZoneInfo.ConvertTimeFromUtc(appointment.Start, TimeZoneInfo.Local);
+                dateTimePickerEndAppointment.Value = TimeZoneInfo.ConvertTimeFromUtc(appointment.End, TimeZoneInfo.Local);
             }
         }
 
@@ -314,7 +314,7 @@ namespace C969_Atown10
 
                     User user = _userService.GetUserByName(_loginForm.userName);
 
-                    appointment.Customer = _customerService.GetCustomer(int.Parse(textBoxCustomerAppointment.Text));
+                    appointment.Customer = _customerService.GetCustomerByName(textBoxCustomerAppointment.Text);
                     appointment.User = user;
                     appointment.Title = textBoxTitleAppointment.Text;
                     appointment.Description = textBoxDescriptionAppointment.Text;
@@ -351,6 +351,41 @@ namespace C969_Atown10
             }
         }
 
+        public static DateTime StartOfWeek(DateTime dt, DayOfWeek startOfWeek)
+        {
+            int diff = (7 + (dt.DayOfWeek - startOfWeek)) % 7;
+            return dt.AddDays(-1 * diff).Date;
+        }
+
+        public static DateTime EndOfWeek(DateTime dt)
+        {
+            return StartOfWeek(dt, DayOfWeek.Monday).AddDays(6);
+        }
+
+        public static DateTime StartOfMonth(DateTime dt)
+        {
+            return new DateTime(dt.Year, dt.Month, 1);
+        }
+
+        public static DateTime EndOfMonth(DateTime dt)
+        {
+            return StartOfMonth(dt).AddMonths(1).AddDays(-1);
+        }
+
+        private void radioButtonMonthView_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void radioButtonWeekView_CheckedChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void monthCalendar_DateChanged(object sender, DateRangeEventArgs e)
+        {
+
+        }
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -362,6 +397,6 @@ namespace C969_Atown10
 
         }
 
-       
+        
     }
 }
