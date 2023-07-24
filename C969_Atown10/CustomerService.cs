@@ -90,6 +90,74 @@ namespace C969_Atown10
             }
         }
 
+        public Customer GetCustomerByName(string name)
+        {
+            Customer customer = null;
+            string sql = @"SELECT Customer.*, Address.*, City.*, Country.* FROM Customer 
+                INNER JOIN Address ON Customer.addressId = Address.addressId 
+                INNER JOIN City ON Address.cityId = City.cityId
+                INNER JOIN Country ON City.countryId = Country.countryId
+                WHERE Customer.customerName = @Name";
+
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+                MySqlCommand command = new MySqlCommand(sql, connection);
+                command.Parameters.AddWithValue("@Name", name);
+                MySqlDataReader reader = command.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    customer = new Customer()
+                    {
+                        Id = Convert.ToInt32(reader["customerId"]),
+                        CustomerName = reader["customerName"].ToString(),
+                        AddressId = Convert.ToInt32(reader["addressId"]),
+                        Active = Convert.ToBoolean(reader["active"]),
+                        CreatedDate = Convert.ToDateTime(reader["createDate"]),
+                        CreatedBy = reader["createdBy"].ToString(),
+                        LastUpdate = Convert.ToDateTime(reader["lastUpdate"]),
+                        LastUpdatedBy = reader["lastUpdateBy"].ToString()
+                    };
+
+                    customer.Address = new Address()
+                    {
+                        Id = Convert.ToInt32(reader["addressId"]),
+                        AddressLine1 = reader["address"].ToString(),
+                        AddressLine2 = reader["address2"].ToString(),
+                        PostalCode = reader["postalCode"].ToString(),
+                        Phone = reader["phone"].ToString(),
+                        CreatedDate = Convert.ToDateTime(reader["createDate"]),
+                        CreatedBy = reader["createdBy"].ToString(),
+                        LastUpdate = Convert.ToDateTime(reader["lastUpdate"]),
+                        LastUpdatedBy = reader["lastUpdateBy"].ToString()
+                    };
+
+                    customer.Address.City = new City()
+                    {
+                        Id = Convert.ToInt32(reader["cityId"]),
+                        CityName = reader["city"].ToString(),
+                        CreatedDate = Convert.ToDateTime(reader["createDate"]),
+                        CreatedBy = reader["createdBy"].ToString(),
+                        LastUpdate = Convert.ToDateTime(reader["lastUpdate"]),
+                        LastUpdatedBy = reader["lastUpdateBy"].ToString()
+                    };
+
+                    customer.Address.City.Country = new Country()
+                    {
+                        Id = Convert.ToInt32(reader["countryId"]),
+                        CountryName = reader["country"].ToString(),
+                        CreatedDate = Convert.ToDateTime(reader["createDate"]),
+                        CreatedBy = reader["createdBy"].ToString(),
+                        LastUpdate = Convert.ToDateTime(reader["lastUpdate"]),
+                        LastUpdatedBy = reader["lastUpdateBy"].ToString()
+                    };
+                }
+                return customer;
+            }
+        }
+
+
         public List<Customer> GetAllCustomers()
         {
             List<Customer> customers = new List<Customer>();

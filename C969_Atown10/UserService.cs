@@ -54,6 +54,37 @@ namespace C969_Atown10
             }
         }
 
+        public User GetUserByName(string userName)
+        {
+            User user = null;
+            string sql = "SELECT * FROM User WHERE userName = @UserName";
+
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+                MySqlCommand command = new MySqlCommand(sql, connection);
+                command.Parameters.AddWithValue("@UserName", userName);
+                MySqlDataReader reader = command.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    user = new User()
+                    {
+                        Id = Convert.ToInt32(reader["userId"]),
+                        UserName = reader["userName"].ToString(),
+                        Password = reader["password"].ToString(),
+                        Active = Convert.ToBoolean(reader["active"]),
+                        CreatedDate = Convert.ToDateTime(reader["createDate"]),
+                        CreatedBy = reader["createdBy"].ToString(),
+                        LastUpdate = Convert.ToDateTime(reader["lastUpdate"]),
+                        LastUpdatedBy = reader["lastUpdateBy"].ToString()
+                    };
+                }
+            }
+
+            return user;
+        }
+
         public List<User> GetAllUsers()
         {
             List<User> users = new List<User>();

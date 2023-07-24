@@ -17,6 +17,8 @@ namespace C969_Atown10
         private AddressService _addressService;
         private CityService _cityService;
         private CountryService _countryService;
+        private AppointmentService _appointmentService;
+        private UserService _userService;
         public MainForm(LoginForm loginForm)
         {
             InitializeComponent();
@@ -25,11 +27,14 @@ namespace C969_Atown10
             _addressService = new AddressService();
             _cityService = new CityService();
             _countryService = new CountryService();
+            _appointmentService = new AppointmentService();
+            _userService = new UserService();
         }
 
         private void MainForm_Load(object sender, EventArgs e)
         {
             PopulateCustomerListView();
+            PopulateAppointmentListView();
         }
 
         private void PopulateCustomerListView()
@@ -65,6 +70,30 @@ namespace C969_Atown10
                 item.SubItems.Add(customer.Active.ToString());
 
                 listViewCustomers.Items.Add(item);
+            }
+        }
+
+        private void PopulateAppointmentListView()
+        {
+            listViewAppointments.Items.Clear();
+
+            List<Appointment> appointments = _appointmentService.GetAllAppointments();
+
+            foreach (Appointment appointment in appointments)
+            {
+                ListViewItem item = new ListViewItem(appointment.Id.ToString());
+                item.SubItems.Add(appointment.Customer.CustomerName);
+                item.SubItems.Add(appointment.User.UserName); 
+                item.SubItems.Add(appointment.Title);
+                item.SubItems.Add(appointment.Description);
+                item.SubItems.Add(appointment.Location);
+                item.SubItems.Add(appointment.Contact);
+                item.SubItems.Add(appointment.Type);
+                item.SubItems.Add(appointment.Url);
+                item.SubItems.Add(TimeZoneInfo.ConvertTimeFromUtc(appointment.Start, TimeZoneInfo.Local).ToString());
+                item.SubItems.Add(TimeZoneInfo.ConvertTimeFromUtc(appointment.End, TimeZoneInfo.Local).ToString());
+
+                listViewAppointments.Items.Add(item);
             }
         }
 
@@ -113,6 +142,27 @@ namespace C969_Atown10
             }
         }
 
+        private void listViewAppointments_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (listViewAppointments.SelectedItems.Count > 0)
+            {
+                ListViewItem selectedItem = listViewAppointments.SelectedItems[0];
+                var id = int.Parse(selectedItem.SubItems[0].Text);
+
+                var appointment = _appointmentService.GetAppointment(id);
+
+                textBoxCustomerAppointment.Text = appointment.Customer.CustomerName;
+                textBoxTitleAppointment.Text = appointment.Title;
+                textBoxDescriptionAppointment.Text = appointment.Description;
+                textBoxLocationAppointment.Text = appointment.Location;
+                textBoxContactAppointment.Text = appointment.Contact;
+                textBoxTypeAppointment.Text = appointment.Type;
+                textBoxURLAppointment.Text = appointment.Url;
+                dateTimePickerStartAppointment.Value = appointment.Start;
+                dateTimePickerEndAppointment.Value = appointment.End;
+            }
+        }
+
         private void buttonAddCustomer_Click(object sender, EventArgs e)
         {
             Country newCountry = new Country
@@ -121,7 +171,7 @@ namespace C969_Atown10
                 CreatedDate = DateTime.Now,
                 CreatedBy = _loginForm.userName,
                 LastUpdate = DateTime.Now,
-                LastUpdatedBy = "CurrentUserName"
+                LastUpdatedBy = _loginForm.userName
             };
 
             newCountry.Id = _countryService.AddCountry(newCountry);
@@ -218,6 +268,90 @@ namespace C969_Atown10
             }
         }
 
+        private void buttonAddAppointment_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                User user = _userService.GetUserByName(_loginForm.userName);
+                Appointment appointment = new Appointment
+                {
+                    Customer = _customerService.GetCustomerByName(textBoxCustomerAppointment.Text),
+                    User = user,
+                    Title = textBoxTitleAppointment.Text,
+                    Description = textBoxDescriptionAppointment.Text,
+                    Location = textBoxLocationAppointment.Text,
+                    Contact = textBoxContactAppointment.Text,
+                    Type = textBoxTypeAppointment.Text,
+                    Url = textBoxURLAppointment.Text,
+                    Start = TimeZoneInfo.ConvertTimeToUtc(dateTimePickerStartAppointment.Value),
+                    End = TimeZoneInfo.ConvertTimeToUtc(dateTimePickerEndAppointment.Value),
+                    CreatedBy = _loginForm.userName,
+                    LastUpdatedBy = _loginForm.userName,
+                    CreatedDate = DateTime.UtcNow,
+                    LastUpdate = DateTime.UtcNow
+                };
+
+                _appointmentService.AddAppointment(appointment);
+
+                PopulateAppointmentListView();
+            }
+            catch (Exception exception)
+            {
+                MessageBox.Show(exception.Message);
+            }
+        }
+
+        private void buttonUpdateAppointment_Click(object sender, EventArgs e)
+        {
+            if (listViewAppointments.SelectedItems.Count > 0)
+            {
+                try
+                {
+                    ListViewItem selectedItem = listViewAppointments.SelectedItems[0];
+                    var id = int.Parse(selectedItem.SubItems[0].Text);
+
+                    Appointment appointment = _appointmentService.GetAppointment(id);
+
+                    User user = _userService.GetUserByName(_loginForm.userName);
+
+                    appointment.Customer = _customerService.GetCustomer(int.Parse(textBoxCustomerAppointment.Text));
+                    appointment.User = user;
+                    appointment.Title = textBoxTitleAppointment.Text;
+                    appointment.Description = textBoxDescriptionAppointment.Text;
+                    appointment.Location = textBoxLocationAppointment.Text;
+                    appointment.Contact = textBoxContactAppointment.Text;
+                    appointment.Type = textBoxTypeAppointment.Text;
+                    appointment.Url = textBoxURLAppointment.Text;
+                    appointment.Start = TimeZoneInfo.ConvertTimeToUtc(dateTimePickerStartAppointment.Value);
+                    appointment.End = TimeZoneInfo.ConvertTimeToUtc(dateTimePickerEndAppointment.Value);
+                    appointment.LastUpdatedBy = _loginForm.userName;
+                    appointment.LastUpdate = DateTime.UtcNow;
+
+                    _appointmentService.UpdateAppointment(appointment);
+
+                    PopulateAppointmentListView();
+                }
+                catch (Exception exception)
+                {
+                    MessageBox.Show(exception.Message);
+                }
+            }
+        }
+
+        private void buttonDeleteAppointment_Click(object sender, EventArgs e)
+        {
+            if (listViewAppointments.SelectedItems.Count > 0)
+            {
+                ListViewItem selectedItem = listViewAppointments.SelectedItems[0];
+                var id = int.Parse(selectedItem.SubItems[0].Text);
+
+                _appointmentService.DeleteAppointment(id);
+
+                PopulateAppointmentListView();
+            }
+        }
+
+
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
         {
 
@@ -228,6 +362,6 @@ namespace C969_Atown10
 
         }
 
-      
+       
     }
 }

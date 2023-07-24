@@ -12,6 +12,7 @@ namespace C969_Atown10
     {
         private string _connectionString;
         private CustomerService _customerService = new CustomerService();
+        private UserService _userService = new UserService();
 
         public AppointmentService()
         {
@@ -29,22 +30,25 @@ namespace C969_Atown10
 
         private bool IsDuringBusinessHours(DateTime start, DateTime end)
         {
-            var startHour = TimeZoneInfo.ConvertTimeFromUtc(start, UserTimeZone).Hour;
-            var endHour = TimeZoneInfo.ConvertTimeFromUtc(end, UserTimeZone).Hour;
-            return startHour >= 9 && endHour <= 17;
+            var startHour = TimeZoneInfo.ConvertTimeFromUtc(start, TimeZoneInfo.Local).Hour;
+            var endHour = TimeZoneInfo.ConvertTimeFromUtc(end, TimeZoneInfo.Local).Hour;
+
+            Console.WriteLine($"Start Hour: {startHour}, End Hour: {endHour}");
+
+            return startHour >= 9 && endHour < 18;
         }
 
         private bool HasOverlappingAppointments(Appointment newAppointment)
         {
-            var appointments = GetAllAppointments().Where(a => a.UserId == newAppointment.UserId);
+            var appointments = GetAllAppointments().Where(a => a.User.Id == newAppointment.User.Id);
             return appointments.Any(a => // Using a lambda function here with the linq "Any" method is the quickest way to search through the Appointments list.
                 (newAppointment.Start >= a.Start && newAppointment.Start < a.End) || // Using a lambda here allows us to quickly iterate through the list without having to write a loop.
                 (newAppointment.End > a.Start && newAppointment.End <= a.End)); 
         }
 
-        private bool CustomerExists(int customerId)
+        private bool CustomerExists(Customer customer)
         {
-            return _customerService.GetCustomer(customerId) != null;
+            return _customerService.GetCustomer(customer.Id) != null;
         }
 
         public Appointment GetAppointment(int id)
@@ -64,25 +68,22 @@ namespace C969_Atown10
                     appointment = new Appointment()
                     {
                         Id = Convert.ToInt32(reader["appointmentId"]),
-                        CustomerId = Convert.ToInt32(reader["customerId"]),
-                        UserId = Convert.ToInt32(reader["userId"]),
+                        Customer = _customerService.GetCustomer(Convert.ToInt32(reader["customerId"])),
+                        User = _userService.GetUser(Convert.ToInt32(reader["userId"])),
                         Title = reader["title"].ToString(),
                         Description = reader["description"].ToString(),
                         Location = reader["location"].ToString(),
                         Contact = reader["contact"].ToString(),
                         Type = reader["type"].ToString(),
                         Url = reader["url"].ToString(),
-                        Start = Convert.ToDateTime(reader["start"]),
-                        End = Convert.ToDateTime(reader["end"]),
+                        Start = DateTime.SpecifyKind(Convert.ToDateTime(reader["start"]), DateTimeKind.Utc),
+                        End = DateTime.SpecifyKind(Convert.ToDateTime(reader["end"]), DateTimeKind.Utc),
                         CreatedDate = Convert.ToDateTime(reader["createDate"]),
                         CreatedBy = reader["createdBy"].ToString(),
                         LastUpdate = Convert.ToDateTime(reader["lastUpdate"]),
                         LastUpdatedBy = reader["lastUpdateBy"].ToString()
                     };
                 }
-
-                appointment.Start = TimeZoneInfo.ConvertTimeFromUtc(appointment.Start, UserTimeZone);
-                appointment.End = TimeZoneInfo.ConvertTimeFromUtc(appointment.End, UserTimeZone);
 
                 return appointment;
             }
@@ -104,25 +105,22 @@ namespace C969_Atown10
                     Appointment appointment = new Appointment()
                     {
                         Id = Convert.ToInt32(reader["appointmentId"]),
-                        CustomerId = Convert.ToInt32(reader["customerId"]),
-                        UserId = Convert.ToInt32(reader["userId"]),
+                        Customer = _customerService.GetCustomer(Convert.ToInt32(reader["customerId"])),
+                        User = _userService.GetUser(Convert.ToInt32(reader["userId"])),
                         Title = reader["title"].ToString(),
                         Description = reader["description"].ToString(),
                         Location = reader["location"].ToString(),
                         Contact = reader["contact"].ToString(),
                         Type = reader["type"].ToString(),
                         Url = reader["url"].ToString(),
-                        Start = Convert.ToDateTime(reader["start"]),
-                        End = Convert.ToDateTime(reader["end"]),
+                        Start = DateTime.SpecifyKind(Convert.ToDateTime(reader["start"]), DateTimeKind.Utc),
+                        End = DateTime.SpecifyKind(Convert.ToDateTime(reader["end"]), DateTimeKind.Utc),
                         CreatedDate = Convert.ToDateTime(reader["createDate"]),
                         CreatedBy = reader["createdBy"].ToString(),
                         LastUpdate = Convert.ToDateTime(reader["lastUpdate"]),
                         LastUpdatedBy = reader["lastUpdateBy"].ToString()
-                        
-                    };
 
-                    appointment.Start = TimeZoneInfo.ConvertTimeFromUtc(appointment.Start, UserTimeZone);
-                    appointment.End = TimeZoneInfo.ConvertTimeFromUtc(appointment.End, UserTimeZone);
+                    };
 
                     appointments.Add(appointment);
                 }
@@ -133,7 +131,7 @@ namespace C969_Atown10
 
         public void AddAppointment(Appointment appointment)
         {
-            if (!CustomerExists(appointment.CustomerId))
+            if (!CustomerExists(appointment.Customer))
                 throw new Exception("The customer does not exist.");
 
             if (!IsDuringBusinessHours(appointment.Start, appointment.End))
@@ -141,9 +139,6 @@ namespace C969_Atown10
 
             if (HasOverlappingAppointments(appointment))
                 throw new Exception("The appointment overlaps with other appointments.");
-
-            appointment.Start = TimeZoneInfo.ConvertTimeToUtc(appointment.Start, UserTimeZone);
-            appointment.End = TimeZoneInfo.ConvertTimeToUtc(appointment.End, UserTimeZone);
 
             string sql = "INSERT INTO Appointment (customerId, userId, title, description, location, contact, type, url, start, end, createDate, createdBy, lastUpdate, lastUpdateBy) " +
             "VALUES (@CustomerId, @UserId, @Title, @Description, @Location, @Contact, @Type, @Url, @Start, @End, @CreateDate, @CreatedBy, @LastUpdate, @LastUpdatedBy)";
@@ -153,8 +148,8 @@ namespace C969_Atown10
                 connection.Open();
                 MySqlCommand command = new MySqlCommand(sql, connection);
 
-                command.Parameters.AddWithValue("@CustomerId", appointment.CustomerId);
-                command.Parameters.AddWithValue("@UserId", appointment.UserId);
+                command.Parameters.AddWithValue("@CustomerId", appointment.Customer.Id);
+                command.Parameters.AddWithValue("@UserId", appointment.User.Id);
                 command.Parameters.AddWithValue("@Title", appointment.Title);
                 command.Parameters.AddWithValue("@Description", appointment.Description);
                 command.Parameters.AddWithValue("@Location", appointment.Location);
@@ -174,7 +169,7 @@ namespace C969_Atown10
 
         public void UpdateAppointment(Appointment appointment)
         {
-            if (!CustomerExists(appointment.CustomerId))
+            if (!CustomerExists(appointment.Customer))
                 throw new Exception("The customer does not exist.");
 
             if (!IsDuringBusinessHours(appointment.Start, appointment.End))
@@ -196,8 +191,8 @@ namespace C969_Atown10
                 MySqlCommand command = new MySqlCommand(sql, connection);
 
                 command.Parameters.AddWithValue("@Id", appointment.Id);
-                command.Parameters.AddWithValue("@CustomerId", appointment.CustomerId);
-                command.Parameters.AddWithValue("@UserId", appointment.UserId);
+                command.Parameters.AddWithValue("@CustomerId", appointment.Customer.Id);
+                command.Parameters.AddWithValue("@UserId", appointment.User.Id);
                 command.Parameters.AddWithValue("@Title", appointment.Title);
                 command.Parameters.AddWithValue("@Description", appointment.Description);
                 command.Parameters.AddWithValue("@Location", appointment.Location);

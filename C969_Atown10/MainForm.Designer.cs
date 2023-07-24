@@ -84,15 +84,13 @@
             this.labelTypeAppointment = new System.Windows.Forms.Label();
             this.textBoxContactAppointment = new System.Windows.Forms.TextBox();
             this.labelContactAppointment = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.textBoxLocationAppointment = new System.Windows.Forms.TextBox();
             this.labelLocationAppointment = new System.Windows.Forms.Label();
             this.textBoxDescriptionAppointment = new System.Windows.Forms.TextBox();
             this.labelDescriptionAppointment = new System.Windows.Forms.Label();
             this.textBoxTitleAppointment = new System.Windows.Forms.TextBox();
             this.labelTitleAppointment = new System.Windows.Forms.Label();
-            this.textBoxUserAppointments = new System.Windows.Forms.TextBox();
-            this.labelUserAppointment = new System.Windows.Forms.Label();
-            this.textBoxCustomerIdAppointment = new System.Windows.Forms.TextBox();
+            this.textBoxCustomerAppointment = new System.Windows.Forms.TextBox();
             this.labelCustomerAppointment = new System.Windows.Forms.Label();
             this.listViewAppointments = new System.Windows.Forms.ListView();
             this.labelAppointmentList = new System.Windows.Forms.Label();
@@ -114,6 +112,17 @@
             this.labelPostalCode1 = new System.Windows.Forms.Label();
             this.Address1PostalCode = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Address2PostalCode = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.AppointmentID = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.appointmentCustomer = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.appointmentTitle = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.appointmentDescription = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.appointmentLocation = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.appointmentContact = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.appointmentType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.appointmentURL = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.appointmentStart = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.appointmentEnd = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.appointmentUser = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabControlMain.SuspendLayout();
             this.tabPageCustomers.SuspendLayout();
             this.groupBoxCustomerActions.SuspendLayout();
@@ -532,6 +541,7 @@
             this.buttonDeleteAppointment.TabIndex = 2;
             this.buttonDeleteAppointment.Text = "Delete";
             this.buttonDeleteAppointment.UseVisualStyleBackColor = true;
+            this.buttonDeleteAppointment.Click += new System.EventHandler(this.buttonDeleteAppointment_Click);
             // 
             // buttonUpdateAppointment
             // 
@@ -541,6 +551,7 @@
             this.buttonUpdateAppointment.TabIndex = 1;
             this.buttonUpdateAppointment.Text = "Update";
             this.buttonUpdateAppointment.UseVisualStyleBackColor = true;
+            this.buttonUpdateAppointment.Click += new System.EventHandler(this.buttonUpdateAppointment_Click);
             // 
             // buttonAddAppointment
             // 
@@ -550,6 +561,7 @@
             this.buttonAddAppointment.TabIndex = 0;
             this.buttonAddAppointment.Text = "Add";
             this.buttonAddAppointment.UseVisualStyleBackColor = true;
+            this.buttonAddAppointment.Click += new System.EventHandler(this.buttonAddAppointment_Click);
             // 
             // groupBoxAppointmentDetails
             // 
@@ -563,15 +575,13 @@
             this.groupBoxAppointmentDetails.Controls.Add(this.labelTypeAppointment);
             this.groupBoxAppointmentDetails.Controls.Add(this.textBoxContactAppointment);
             this.groupBoxAppointmentDetails.Controls.Add(this.labelContactAppointment);
-            this.groupBoxAppointmentDetails.Controls.Add(this.textBox2);
+            this.groupBoxAppointmentDetails.Controls.Add(this.textBoxLocationAppointment);
             this.groupBoxAppointmentDetails.Controls.Add(this.labelLocationAppointment);
             this.groupBoxAppointmentDetails.Controls.Add(this.textBoxDescriptionAppointment);
             this.groupBoxAppointmentDetails.Controls.Add(this.labelDescriptionAppointment);
             this.groupBoxAppointmentDetails.Controls.Add(this.textBoxTitleAppointment);
             this.groupBoxAppointmentDetails.Controls.Add(this.labelTitleAppointment);
-            this.groupBoxAppointmentDetails.Controls.Add(this.textBoxUserAppointments);
-            this.groupBoxAppointmentDetails.Controls.Add(this.labelUserAppointment);
-            this.groupBoxAppointmentDetails.Controls.Add(this.textBoxCustomerIdAppointment);
+            this.groupBoxAppointmentDetails.Controls.Add(this.textBoxCustomerAppointment);
             this.groupBoxAppointmentDetails.Controls.Add(this.labelCustomerAppointment);
             this.groupBoxAppointmentDetails.Location = new System.Drawing.Point(10, 598);
             this.groupBoxAppointmentDetails.Name = "groupBoxAppointmentDetails";
@@ -582,14 +592,18 @@
             // 
             // dateTimePickerEndAppointment
             // 
-            this.dateTimePickerEndAppointment.Location = new System.Drawing.Point(521, 174);
+            this.dateTimePickerEndAppointment.CustomFormat = "MM/dd/yyyy hh:mm:ss tt";
+            this.dateTimePickerEndAppointment.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dateTimePickerEndAppointment.Location = new System.Drawing.Point(521, 137);
             this.dateTimePickerEndAppointment.Name = "dateTimePickerEndAppointment";
             this.dateTimePickerEndAppointment.Size = new System.Drawing.Size(228, 22);
             this.dateTimePickerEndAppointment.TabIndex = 24;
             // 
             // dateTimePickerStartAppointment
             // 
-            this.dateTimePickerStartAppointment.Location = new System.Drawing.Point(521, 136);
+            this.dateTimePickerStartAppointment.CustomFormat = "MM/dd/yyyy hh:mm:ss tt";
+            this.dateTimePickerStartAppointment.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dateTimePickerStartAppointment.Location = new System.Drawing.Point(521, 99);
             this.dateTimePickerStartAppointment.Name = "dateTimePickerStartAppointment";
             this.dateTimePickerStartAppointment.Size = new System.Drawing.Size(228, 22);
             this.dateTimePickerStartAppointment.TabIndex = 23;
@@ -598,7 +612,7 @@
             // 
             this.labelEndAppointment.AutoSize = true;
             this.labelEndAppointment.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelEndAppointment.Location = new System.Drawing.Point(468, 174);
+            this.labelEndAppointment.Location = new System.Drawing.Point(468, 137);
             this.labelEndAppointment.Name = "labelEndAppointment";
             this.labelEndAppointment.Size = new System.Drawing.Size(47, 22);
             this.labelEndAppointment.TabIndex = 22;
@@ -608,7 +622,7 @@
             // 
             this.labelStartAppointment.AutoSize = true;
             this.labelStartAppointment.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelStartAppointment.Location = new System.Drawing.Point(462, 136);
+            this.labelStartAppointment.Location = new System.Drawing.Point(462, 99);
             this.labelStartAppointment.Name = "labelStartAppointment";
             this.labelStartAppointment.Size = new System.Drawing.Size(53, 22);
             this.labelStartAppointment.TabIndex = 20;
@@ -616,7 +630,7 @@
             // 
             // textBoxURLAppointment
             // 
-            this.textBoxURLAppointment.Location = new System.Drawing.Point(521, 99);
+            this.textBoxURLAppointment.Location = new System.Drawing.Point(521, 62);
             this.textBoxURLAppointment.Name = "textBoxURLAppointment";
             this.textBoxURLAppointment.Size = new System.Drawing.Size(228, 22);
             this.textBoxURLAppointment.TabIndex = 19;
@@ -625,7 +639,7 @@
             // 
             this.labelUrlAppointment.AutoSize = true;
             this.labelUrlAppointment.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelUrlAppointment.Location = new System.Drawing.Point(464, 99);
+            this.labelUrlAppointment.Location = new System.Drawing.Point(464, 62);
             this.labelUrlAppointment.Name = "labelUrlAppointment";
             this.labelUrlAppointment.Size = new System.Drawing.Size(51, 22);
             this.labelUrlAppointment.TabIndex = 18;
@@ -633,7 +647,7 @@
             // 
             // textBoxTypeAppointment
             // 
-            this.textBoxTypeAppointment.Location = new System.Drawing.Point(521, 60);
+            this.textBoxTypeAppointment.Location = new System.Drawing.Point(521, 23);
             this.textBoxTypeAppointment.Name = "textBoxTypeAppointment";
             this.textBoxTypeAppointment.Size = new System.Drawing.Size(228, 22);
             this.textBoxTypeAppointment.TabIndex = 17;
@@ -642,7 +656,7 @@
             // 
             this.labelTypeAppointment.AutoSize = true;
             this.labelTypeAppointment.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelTypeAppointment.Location = new System.Drawing.Point(459, 60);
+            this.labelTypeAppointment.Location = new System.Drawing.Point(459, 23);
             this.labelTypeAppointment.Name = "labelTypeAppointment";
             this.labelTypeAppointment.Size = new System.Drawing.Size(56, 22);
             this.labelTypeAppointment.TabIndex = 16;
@@ -650,7 +664,7 @@
             // 
             // textBoxContactAppointment
             // 
-            this.textBoxContactAppointment.Location = new System.Drawing.Point(521, 23);
+            this.textBoxContactAppointment.Location = new System.Drawing.Point(153, 176);
             this.textBoxContactAppointment.Name = "textBoxContactAppointment";
             this.textBoxContactAppointment.Size = new System.Drawing.Size(228, 22);
             this.textBoxContactAppointment.TabIndex = 15;
@@ -659,24 +673,24 @@
             // 
             this.labelContactAppointment.AutoSize = true;
             this.labelContactAppointment.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelContactAppointment.Location = new System.Drawing.Point(438, 23);
+            this.labelContactAppointment.Location = new System.Drawing.Point(70, 176);
             this.labelContactAppointment.Name = "labelContactAppointment";
             this.labelContactAppointment.Size = new System.Drawing.Size(77, 22);
             this.labelContactAppointment.TabIndex = 14;
             this.labelContactAppointment.Text = "Contact:";
             // 
-            // textBox2
+            // textBoxLocationAppointment
             // 
-            this.textBox2.Location = new System.Drawing.Point(153, 172);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(228, 22);
-            this.textBox2.TabIndex = 13;
+            this.textBoxLocationAppointment.Location = new System.Drawing.Point(153, 135);
+            this.textBoxLocationAppointment.Name = "textBoxLocationAppointment";
+            this.textBoxLocationAppointment.Size = new System.Drawing.Size(228, 22);
+            this.textBoxLocationAppointment.TabIndex = 13;
             // 
             // labelLocationAppointment
             // 
             this.labelLocationAppointment.AutoSize = true;
             this.labelLocationAppointment.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelLocationAppointment.Location = new System.Drawing.Point(64, 172);
+            this.labelLocationAppointment.Location = new System.Drawing.Point(64, 135);
             this.labelLocationAppointment.Name = "labelLocationAppointment";
             this.labelLocationAppointment.Size = new System.Drawing.Size(83, 22);
             this.labelLocationAppointment.TabIndex = 12;
@@ -684,7 +698,7 @@
             // 
             // textBoxDescriptionAppointment
             // 
-            this.textBoxDescriptionAppointment.Location = new System.Drawing.Point(153, 134);
+            this.textBoxDescriptionAppointment.Location = new System.Drawing.Point(153, 97);
             this.textBoxDescriptionAppointment.Name = "textBoxDescriptionAppointment";
             this.textBoxDescriptionAppointment.Size = new System.Drawing.Size(228, 22);
             this.textBoxDescriptionAppointment.TabIndex = 11;
@@ -693,7 +707,7 @@
             // 
             this.labelDescriptionAppointment.AutoSize = true;
             this.labelDescriptionAppointment.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelDescriptionAppointment.Location = new System.Drawing.Point(45, 134);
+            this.labelDescriptionAppointment.Location = new System.Drawing.Point(45, 97);
             this.labelDescriptionAppointment.Name = "labelDescriptionAppointment";
             this.labelDescriptionAppointment.Size = new System.Drawing.Size(105, 22);
             this.labelDescriptionAppointment.TabIndex = 10;
@@ -701,7 +715,7 @@
             // 
             // textBoxTitleAppointment
             // 
-            this.textBoxTitleAppointment.Location = new System.Drawing.Point(153, 97);
+            this.textBoxTitleAppointment.Location = new System.Drawing.Point(153, 60);
             this.textBoxTitleAppointment.Name = "textBoxTitleAppointment";
             this.textBoxTitleAppointment.Size = new System.Drawing.Size(228, 22);
             this.textBoxTitleAppointment.TabIndex = 9;
@@ -710,35 +724,18 @@
             // 
             this.labelTitleAppointment.AutoSize = true;
             this.labelTitleAppointment.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelTitleAppointment.Location = new System.Drawing.Point(97, 97);
+            this.labelTitleAppointment.Location = new System.Drawing.Point(97, 60);
             this.labelTitleAppointment.Name = "labelTitleAppointment";
             this.labelTitleAppointment.Size = new System.Drawing.Size(50, 22);
             this.labelTitleAppointment.TabIndex = 8;
             this.labelTitleAppointment.Text = "Title:";
             // 
-            // textBoxUserAppointments
+            // textBoxCustomerAppointment
             // 
-            this.textBoxUserAppointments.Location = new System.Drawing.Point(153, 58);
-            this.textBoxUserAppointments.Name = "textBoxUserAppointments";
-            this.textBoxUserAppointments.Size = new System.Drawing.Size(228, 22);
-            this.textBoxUserAppointments.TabIndex = 7;
-            // 
-            // labelUserAppointment
-            // 
-            this.labelUserAppointment.AutoSize = true;
-            this.labelUserAppointment.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelUserAppointment.Location = new System.Drawing.Point(94, 58);
-            this.labelUserAppointment.Name = "labelUserAppointment";
-            this.labelUserAppointment.Size = new System.Drawing.Size(53, 22);
-            this.labelUserAppointment.TabIndex = 6;
-            this.labelUserAppointment.Text = "User:";
-            // 
-            // textBoxCustomerIdAppointment
-            // 
-            this.textBoxCustomerIdAppointment.Location = new System.Drawing.Point(153, 21);
-            this.textBoxCustomerIdAppointment.Name = "textBoxCustomerIdAppointment";
-            this.textBoxCustomerIdAppointment.Size = new System.Drawing.Size(228, 22);
-            this.textBoxCustomerIdAppointment.TabIndex = 5;
+            this.textBoxCustomerAppointment.Location = new System.Drawing.Point(153, 21);
+            this.textBoxCustomerAppointment.Name = "textBoxCustomerAppointment";
+            this.textBoxCustomerAppointment.Size = new System.Drawing.Size(228, 22);
+            this.textBoxCustomerAppointment.TabIndex = 5;
             // 
             // labelCustomerAppointment
             // 
@@ -752,12 +749,29 @@
             // 
             // listViewAppointments
             // 
+            this.listViewAppointments.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.AppointmentID,
+            this.appointmentCustomer,
+            this.appointmentUser,
+            this.appointmentTitle,
+            this.appointmentDescription,
+            this.appointmentLocation,
+            this.appointmentContact,
+            this.appointmentType,
+            this.appointmentURL,
+            this.appointmentStart,
+            this.appointmentEnd});
+            this.listViewAppointments.FullRowSelect = true;
+            this.listViewAppointments.GridLines = true;
             this.listViewAppointments.HideSelection = false;
-            this.listViewAppointments.Location = new System.Drawing.Point(3, 35);
+            this.listViewAppointments.Location = new System.Drawing.Point(6, 26);
             this.listViewAppointments.Name = "listViewAppointments";
             this.listViewAppointments.Size = new System.Drawing.Size(1113, 544);
+            this.listViewAppointments.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.listViewAppointments.TabIndex = 3;
             this.listViewAppointments.UseCompatibleStateImageBehavior = false;
+            this.listViewAppointments.View = System.Windows.Forms.View.Details;
+            this.listViewAppointments.SelectedIndexChanged += new System.EventHandler(this.listViewAppointments_SelectedIndexChanged);
             // 
             // labelAppointmentList
             // 
@@ -937,6 +951,60 @@
             // 
             this.Address2PostalCode.Text = "Postal Code";
             // 
+            // AppointmentID
+            // 
+            this.AppointmentID.Text = "ID";
+            this.AppointmentID.Width = 38;
+            // 
+            // appointmentCustomer
+            // 
+            this.appointmentCustomer.Text = "Customer";
+            this.appointmentCustomer.Width = 118;
+            // 
+            // appointmentTitle
+            // 
+            this.appointmentTitle.Text = "Title";
+            this.appointmentTitle.Width = 137;
+            // 
+            // appointmentDescription
+            // 
+            this.appointmentDescription.Text = "Description";
+            this.appointmentDescription.Width = 160;
+            // 
+            // appointmentLocation
+            // 
+            this.appointmentLocation.Text = "Location";
+            this.appointmentLocation.Width = 152;
+            // 
+            // appointmentContact
+            // 
+            this.appointmentContact.Text = "Contact";
+            this.appointmentContact.Width = 133;
+            // 
+            // appointmentType
+            // 
+            this.appointmentType.Text = "Type";
+            this.appointmentType.Width = 116;
+            // 
+            // appointmentURL
+            // 
+            this.appointmentURL.Text = "URL";
+            this.appointmentURL.Width = 92;
+            // 
+            // appointmentStart
+            // 
+            this.appointmentStart.Text = "Start";
+            this.appointmentStart.Width = 108;
+            // 
+            // appointmentEnd
+            // 
+            this.appointmentEnd.Text = "End";
+            this.appointmentEnd.Width = 83;
+            // 
+            // appointmentUser
+            // 
+            this.appointmentUser.Text = "User";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -1002,9 +1070,7 @@
         private System.Windows.Forms.Button buttonDeleteAppointment;
         private System.Windows.Forms.Button buttonUpdateAppointment;
         private System.Windows.Forms.Button buttonAddAppointment;
-        private System.Windows.Forms.TextBox textBoxUserAppointments;
-        private System.Windows.Forms.Label labelUserAppointment;
-        private System.Windows.Forms.TextBox textBoxCustomerIdAppointment;
+        private System.Windows.Forms.TextBox textBoxCustomerAppointment;
         private System.Windows.Forms.Label labelCustomerAppointment;
         private System.Windows.Forms.Label labelEndAppointment;
         private System.Windows.Forms.Label labelStartAppointment;
@@ -1014,7 +1080,7 @@
         private System.Windows.Forms.Label labelTypeAppointment;
         private System.Windows.Forms.TextBox textBoxContactAppointment;
         private System.Windows.Forms.Label labelContactAppointment;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.TextBox textBoxLocationAppointment;
         private System.Windows.Forms.Label labelLocationAppointment;
         private System.Windows.Forms.TextBox textBoxDescriptionAppointment;
         private System.Windows.Forms.Label labelDescriptionAppointment;
@@ -1060,5 +1126,16 @@
         private System.Windows.Forms.Label labelPostalCode1;
         private System.Windows.Forms.ColumnHeader Address1PostalCode;
         private System.Windows.Forms.ColumnHeader Address2PostalCode;
+        private System.Windows.Forms.ColumnHeader AppointmentID;
+        private System.Windows.Forms.ColumnHeader appointmentCustomer;
+        private System.Windows.Forms.ColumnHeader appointmentTitle;
+        private System.Windows.Forms.ColumnHeader appointmentDescription;
+        private System.Windows.Forms.ColumnHeader appointmentLocation;
+        private System.Windows.Forms.ColumnHeader appointmentContact;
+        private System.Windows.Forms.ColumnHeader appointmentType;
+        private System.Windows.Forms.ColumnHeader appointmentURL;
+        private System.Windows.Forms.ColumnHeader appointmentStart;
+        private System.Windows.Forms.ColumnHeader appointmentEnd;
+        private System.Windows.Forms.ColumnHeader appointmentUser;
     }
 }
