@@ -278,7 +278,7 @@
             // 
             // textBoxPostalCode2
             // 
-            this.textBoxPostalCode2.Location = new System.Drawing.Point(642, 142);
+            this.textBoxPostalCode2.Location = new System.Drawing.Point(677, 142);
             this.textBoxPostalCode2.Name = "textBoxPostalCode2";
             this.textBoxPostalCode2.Size = new System.Drawing.Size(124, 22);
             this.textBoxPostalCode2.TabIndex = 21;
@@ -287,15 +287,15 @@
             // 
             this.labelPostalCode2.AutoSize = true;
             this.labelPostalCode2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelPostalCode2.Location = new System.Drawing.Point(571, 140);
+            this.labelPostalCode2.Location = new System.Drawing.Point(591, 140);
             this.labelPostalCode2.Name = "labelPostalCode2";
-            this.labelPostalCode2.Size = new System.Drawing.Size(65, 22);
+            this.labelPostalCode2.Size = new System.Drawing.Size(80, 22);
             this.labelPostalCode2.TabIndex = 20;
-            this.labelPostalCode2.Text = "Postal:";
+            this.labelPostalCode2.Text = "Postal 2:";
             // 
             // textBoxPostalCode1
             // 
-            this.textBoxPostalCode1.Location = new System.Drawing.Point(433, 138);
+            this.textBoxPostalCode1.Location = new System.Drawing.Point(466, 140);
             this.textBoxPostalCode1.Name = "textBoxPostalCode1";
             this.textBoxPostalCode1.Size = new System.Drawing.Size(119, 22);
             this.textBoxPostalCode1.TabIndex = 19;
@@ -304,11 +304,11 @@
             // 
             this.labelPostalCode1.AutoSize = true;
             this.labelPostalCode1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelPostalCode1.Location = new System.Drawing.Point(370, 138);
+            this.labelPostalCode1.Location = new System.Drawing.Point(380, 142);
             this.labelPostalCode1.Name = "labelPostalCode1";
-            this.labelPostalCode1.Size = new System.Drawing.Size(65, 22);
+            this.labelPostalCode1.Size = new System.Drawing.Size(80, 22);
             this.labelPostalCode1.TabIndex = 18;
-            this.labelPostalCode1.Text = "Postal:";
+            this.labelPostalCode1.Text = "Postal 1:";
             // 
             // textBoxAddress2Country
             // 
