@@ -35,6 +35,9 @@ namespace C969_Atown10
         {
             PopulateCustomerListView();
             PopulateAppointmentListView();
+            UpdateAppointmentView();
+            radioButtonMonthView.Checked = true;
+            CheckUpcomingAppointments();
         }
 
         private void PopulateCustomerListView()
@@ -239,17 +242,17 @@ namespace C969_Atown10
 
                 _customerService.UpdateCustomer(customer);
 
-                // Validate that the city and country have been updated correctly
+          
                 var updatedCustomer = _customerService.GetCustomer(id);
 
                 if (updatedCustomer.Address.City.CityName != textBoxAddress1City.Text || updatedCustomer.Address.City.Country.CountryName != textBoxAddress1Country.Text)
                 {
-                    // Display an error message to the user
+                    
                     MessageBox.Show("Failed to update city or country. Please try again.");
                 }
                 else
                 {
-                    // Reload the customer list view
+                    
                     PopulateCustomerListView();
                 }
             }
@@ -372,19 +375,120 @@ namespace C969_Atown10
             return StartOfMonth(dt).AddMonths(1).AddDays(-1);
         }
 
+        private void UpdateAppointmentView()
+        {
+            listViewAppointmentsCalendar.Items.Clear();
+            DateTime selectedDate = monthCalendar.SelectionStart;
+            List<Appointment> appointments = new List<Appointment>();
+
+            if (radioButtonMonthView.Checked)
+            {
+                DateTime startOfMonth = StartOfMonth(selectedDate);
+                DateTime endOfMonth = EndOfMonth(selectedDate);
+                appointments = _appointmentService.GetAppointmentsByMonth(startOfMonth, endOfMonth);
+            }
+            else if (radioButtonWeekView.Checked)
+            {
+                DateTime startOfWeek = StartOfWeek(selectedDate, DayOfWeek.Monday);
+                DateTime endOfWeek = EndOfWeek(selectedDate);
+                appointments = _appointmentService.GetAppointmentsByWeek(startOfWeek, endOfWeek);
+            }
+
+            foreach (Appointment appointment in appointments)
+            {
+                ListViewItem item = new ListViewItem(appointment.Id.ToString());
+                item.SubItems.Add(appointment.Customer.CustomerName);
+                item.SubItems.Add(appointment.User.UserName);
+                item.SubItems.Add(appointment.Title);
+                item.SubItems.Add(appointment.Description);
+                item.SubItems.Add(appointment.Location);
+                item.SubItems.Add(appointment.Contact);
+                item.SubItems.Add(appointment.Type);
+                item.SubItems.Add(appointment.Url);
+                item.SubItems.Add(TimeZoneInfo.ConvertTimeFromUtc(appointment.Start, TimeZoneInfo.Local).ToString());
+                item.SubItems.Add(TimeZoneInfo.ConvertTimeFromUtc(appointment.End, TimeZoneInfo.Local).ToString());
+
+                listViewAppointmentsCalendar.Items.Add(item);
+            }
+        }
+
         private void radioButtonMonthView_CheckedChanged(object sender, EventArgs e)
         {
-
+            UpdateAppointmentView();
         }
 
         private void radioButtonWeekView_CheckedChanged(object sender, EventArgs e)
         {
-
+            UpdateAppointmentView();
         }
 
         private void monthCalendar_DateChanged(object sender, DateRangeEventArgs e)
         {
+            UpdateAppointmentView();
+        }
 
+        private void BindDataToGrid<T>(List<T> data)
+        { 
+            dataGridViewReport.DataSource = null;
+            dataGridViewReport.Rows.Clear();
+            dataGridViewReport.Columns.Clear();
+
+            dataGridViewReport.DataSource = data;
+        }
+
+        private void buttonGenerateReport_Click(object sender, EventArgs e)
+        {
+            var reportType = comboBoxReportSelection.SelectedItem.ToString();
+            var appointmentService = new AppointmentService();
+
+            switch (reportType)
+            {
+                case "Appointment Types by Month":
+                    var appointmentTypesByMonth = appointmentService.GetAppointmentTypesByMonth(DateTime.Now);
+                    var appointmentList = appointmentTypesByMonth.Select(kvp => new
+                    {
+                        Month = kvp.Key.Split(' ')[0],
+                        Type = kvp.Key.Split(' ')[1],
+                        Count = kvp.Value
+                    }).ToList();
+                    BindDataToGrid(appointmentList);
+                    break;
+
+                case "Consultant Schedules":
+                    var consultantSchedules = appointmentService.GetConsultantSchedules();
+                    var schedulesList = consultantSchedules.SelectMany(kvp => kvp.Value.Select(appt => new { Consultant = kvp.Key, AppointmentDetails = appt })).ToList();
+                    BindDataToGrid(schedulesList);
+                    break;
+
+                case "Customer Statistics":
+                    var customerStatistics = appointmentService.GetCustomerStatistics();
+                    var customerList = customerStatistics.Select(kvp => new
+                    {
+                        Customer = kvp.Key,
+                        AppointmentCount = kvp.Value
+                    }).ToList();
+                    BindDataToGrid(customerList);
+                    break;
+            }
+        }
+
+        private void CheckUpcomingAppointments()
+        {
+            var userName = _loginForm.userName; 
+            var user = _userService.GetUserByName(userName);
+            var appointments = _appointmentService.GetAppointmentsByUserId(user.Id);
+
+            var now = DateTime.UtcNow;
+            var upcomingAppointments = appointments.Where(a => a.Start > now && a.Start < now.AddMinutes(15)).ToList();
+
+            if (upcomingAppointments.Any())
+            {
+                var message = string.Join(Environment.NewLine, upcomingAppointments.Select(a =>
+                    $"Title: {a.Title}, Start: {TimeZoneInfo.ConvertTimeFromUtc(a.Start, TimeZoneInfo.Local)}, End: {TimeZoneInfo.ConvertTimeFromUtc(a.End, TimeZoneInfo.Local)}"
+                ));
+
+                MessageBox.Show($"You have the following appointments coming up in the next 15 minutes: {Environment.NewLine}{message}");
+            }
         }
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)

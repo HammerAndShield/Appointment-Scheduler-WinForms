@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,11 +17,13 @@ namespace C969_Atown10
         public string userName;
         public string password;
         private UserService _userService;
+        private string logFilePath;
         public LoginForm()
         {
             InitializeComponent();
             this.Shown += LoginForm_Shown;
             _userService = new UserService();
+            logFilePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "user_login_log.txt");
         }
 
         private void LoginForm_Load(object sender, EventArgs e)
@@ -36,6 +39,11 @@ namespace C969_Atown10
             try
             {
                 _userService.Login(userName, password);
+
+                using (StreamWriter sw = new StreamWriter(logFilePath, append: true))
+                {
+                    sw.WriteLine($"{DateTime.UtcNow}: {userName} logged in.");
+                }
 
                 MainForm mainForm = new MainForm(this);
                 mainForm.Show();

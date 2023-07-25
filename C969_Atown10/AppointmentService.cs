@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -141,18 +142,59 @@ namespace C969_Atown10
             return appointments;
         }
 
+        public List<Appointment> GetAppointmentsByUserId(int userId)
+        {
+            List<Appointment> appointments = new List<Appointment>();
+            string sql = "SELECT * FROM Appointment WHERE userId = @UserId";
+
+            using (var connection = GetConnection())
+            {
+                connection.Open();
+                MySqlCommand command = new MySqlCommand(sql, connection);
+                command.Parameters.AddWithValue("@UserId", userId);
+                MySqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    Appointment appointment = new Appointment()
+                    {
+                        Id = Convert.ToInt32(reader["appointmentId"]),
+                        Customer = _customerService.GetCustomer(Convert.ToInt32(reader["customerId"])),
+                        User = _userService.GetUser(Convert.ToInt32(reader["userId"])),
+                        Title = reader["title"].ToString(),
+                        Description = reader["description"].ToString(),
+                        Location = reader["location"].ToString(),
+                        Contact = reader["contact"].ToString(),
+                        Type = reader["type"].ToString(),
+                        Url = reader["url"].ToString(),
+                        Start = DateTime.SpecifyKind(Convert.ToDateTime(reader["start"]), DateTimeKind.Utc),
+                        End = DateTime.SpecifyKind(Convert.ToDateTime(reader["end"]), DateTimeKind.Utc),
+                        CreatedDate = Convert.ToDateTime(reader["createDate"]),
+                        CreatedBy = reader["createdBy"].ToString(),
+                        LastUpdate = Convert.ToDateTime(reader["lastUpdate"]),
+                        LastUpdatedBy = reader["lastUpdateBy"].ToString()
+                    };
+
+                    appointments.Add(appointment);
+                }
+            }
+
+            return appointments;
+        }
+
         public List<Appointment> GetAppointmentsByWeek(DateTime startOfWeek, DateTime endOfWeek)
         {
             return GetAllAppointments()
                 .Where(a => a.Start.Date >= startOfWeek && a.Start.Date <= endOfWeek)
-                .ToList();
+                .ToList(); //We use a lamda here with linq because it allows use to filter all of the appointments by week
+            //instead of having to pull all of the appointments, then write code to manually filter them.  It allows us to do it quicker with much less code.
         }
 
         public List<Appointment> GetAppointmentsByMonth(DateTime startOfMonth, DateTime endOfMonth)
         {
             return GetAllAppointments()
                 .Where(a => a.Start.Date >= startOfMonth && a.Start.Date <= endOfMonth)
-                .ToList();
+                .ToList(); //We use this lambda function with linq for the same reasons as the method above, but to search for appointments in a month period.
         }
 
         public void AddAppointment(Appointment appointment)
@@ -247,5 +289,53 @@ namespace C969_Atown10
                 command.ExecuteNonQuery();
             }
         }
+
+        public Dictionary<string, int> GetAppointmentTypesByMonth(DateTime month)
+        {
+            var appointments = GetAllAppointments()
+                .Where(a => a.Start.Month == month.Month && a.Start.Year == month.Year);
+
+            return appointments
+                .GroupBy(a => $"{CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(a.Start.Month)} {a.Type}")
+                .ToDictionary(g => g.Key, g => g.Count());
+        }
+
+        public Dictionary<string, List<string>> GetConsultantSchedules()
+        {
+            var allAppointments = GetAllAppointments();
+            var consultantAppointments = new Dictionary<string, List<string>>();
+
+            var users = _userService.GetAllUsers();
+
+            foreach (var user in users)
+            {
+                var userAppointments = allAppointments
+                    .Where(a => a.User.Id == user.Id)
+                    .OrderBy(a => a.Start)
+                    .ToList();
+
+                if (userAppointments.Any())
+                {
+                    consultantAppointments[user.UserName] = userAppointments.Select(a =>
+                        $"Date: {a.Start}, Customer: {a.Customer.CustomerName}, Title: {a.Type}, Location: {a.Location}")
+                    .ToList();
+                }
+            }
+
+            return consultantAppointments;
+        }
+
+
+        public Dictionary<string, int> GetCustomerStatistics()
+        {
+            var allAppointments = GetAllAppointments();
+
+            var customerStatistics = _customerService.GetAllCustomers()
+                .ToDictionary(customer => customer.CustomerName, customer => allAppointments.Count(a => a.Customer.Id == customer.Id));
+
+            return customerStatistics;
+        }
+
+
     }
 }

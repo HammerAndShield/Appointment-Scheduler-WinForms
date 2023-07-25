@@ -38,6 +38,10 @@
             this.buttonUpdateCustomer = new System.Windows.Forms.Button();
             this.buttonAddCustomer = new System.Windows.Forms.Button();
             this.groupBoxCustomerDetails = new System.Windows.Forms.GroupBox();
+            this.textBoxPostalCode2 = new System.Windows.Forms.TextBox();
+            this.labelPostalCode2 = new System.Windows.Forms.Label();
+            this.textBoxPostalCode1 = new System.Windows.Forms.TextBox();
+            this.labelPostalCode1 = new System.Windows.Forms.Label();
             this.textBoxAddress2Country = new System.Windows.Forms.TextBox();
             this.labelAddress2Country = new System.Windows.Forms.Label();
             this.textBoxAddress1Country = new System.Windows.Forms.TextBox();
@@ -62,9 +66,11 @@
             this.Address1Customer = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.City1Customer = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Country1Customer = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Address1PostalCode = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Address2Customer = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.City2Customer = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.Country2Customer = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.Address2PostalCode = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.PhoneNumberCustomer = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.ActiveCustomer = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.labelCustomerList = new System.Windows.Forms.Label();
@@ -93,9 +99,31 @@
             this.textBoxCustomerAppointment = new System.Windows.Forms.TextBox();
             this.labelCustomerAppointment = new System.Windows.Forms.Label();
             this.listViewAppointments = new System.Windows.Forms.ListView();
+            this.AppointmentID = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.appointmentCustomer = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.appointmentUser = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.appointmentTitle = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.appointmentDescription = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.appointmentLocation = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.appointmentContact = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.appointmentType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.appointmentURL = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.appointmentStart = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.appointmentEnd = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.labelAppointmentList = new System.Windows.Forms.Label();
             this.tabPageCalendarView = new System.Windows.Forms.TabPage();
             this.listViewAppointmentsCalendar = new System.Windows.Forms.ListView();
+            this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader6 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader7 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader8 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader9 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader10 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.columnHeader11 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.monthCalendar = new System.Windows.Forms.MonthCalendar();
             this.groupBoxViewSelection = new System.Windows.Forms.GroupBox();
             this.radioButtonWeekView = new System.Windows.Forms.RadioButton();
@@ -106,23 +134,6 @@
             this.comboBoxReportSelection = new System.Windows.Forms.ComboBox();
             this.labelReports = new System.Windows.Forms.Label();
             this.dataGridViewReport = new System.Windows.Forms.DataGridView();
-            this.textBoxPostalCode2 = new System.Windows.Forms.TextBox();
-            this.labelPostalCode2 = new System.Windows.Forms.Label();
-            this.textBoxPostalCode1 = new System.Windows.Forms.TextBox();
-            this.labelPostalCode1 = new System.Windows.Forms.Label();
-            this.Address1PostalCode = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.Address2PostalCode = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.AppointmentID = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.appointmentCustomer = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.appointmentTitle = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.appointmentDescription = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.appointmentLocation = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.appointmentContact = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.appointmentType = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.appointmentURL = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.appointmentStart = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.appointmentEnd = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.appointmentUser = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabControlMain.SuspendLayout();
             this.tabPageCustomers.SuspendLayout();
             this.groupBoxCustomerActions.SuspendLayout();
@@ -264,6 +275,40 @@
             this.groupBoxCustomerDetails.TabIndex = 2;
             this.groupBoxCustomerDetails.TabStop = false;
             this.groupBoxCustomerDetails.Text = "Customer Details";
+            // 
+            // textBoxPostalCode2
+            // 
+            this.textBoxPostalCode2.Location = new System.Drawing.Point(642, 142);
+            this.textBoxPostalCode2.Name = "textBoxPostalCode2";
+            this.textBoxPostalCode2.Size = new System.Drawing.Size(124, 22);
+            this.textBoxPostalCode2.TabIndex = 21;
+            // 
+            // labelPostalCode2
+            // 
+            this.labelPostalCode2.AutoSize = true;
+            this.labelPostalCode2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelPostalCode2.Location = new System.Drawing.Point(571, 140);
+            this.labelPostalCode2.Name = "labelPostalCode2";
+            this.labelPostalCode2.Size = new System.Drawing.Size(65, 22);
+            this.labelPostalCode2.TabIndex = 20;
+            this.labelPostalCode2.Text = "Postal:";
+            // 
+            // textBoxPostalCode1
+            // 
+            this.textBoxPostalCode1.Location = new System.Drawing.Point(433, 138);
+            this.textBoxPostalCode1.Name = "textBoxPostalCode1";
+            this.textBoxPostalCode1.Size = new System.Drawing.Size(119, 22);
+            this.textBoxPostalCode1.TabIndex = 19;
+            // 
+            // labelPostalCode1
+            // 
+            this.labelPostalCode1.AutoSize = true;
+            this.labelPostalCode1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelPostalCode1.Location = new System.Drawing.Point(370, 138);
+            this.labelPostalCode1.Name = "labelPostalCode1";
+            this.labelPostalCode1.Size = new System.Drawing.Size(65, 22);
+            this.labelPostalCode1.TabIndex = 18;
+            this.labelPostalCode1.Text = "Postal:";
             // 
             // textBoxAddress2Country
             // 
@@ -474,6 +519,10 @@
             this.Country1Customer.Text = "Country";
             this.Country1Customer.Width = 75;
             // 
+            // Address1PostalCode
+            // 
+            this.Address1PostalCode.Text = "Postal Code";
+            // 
             // Address2Customer
             // 
             this.Address2Customer.Text = "Address 2";
@@ -486,6 +535,10 @@
             // Country2Customer
             // 
             this.Country2Customer.Text = "Country";
+            // 
+            // Address2PostalCode
+            // 
+            this.Address2PostalCode.Text = "Postal Code";
             // 
             // PhoneNumberCustomer
             // 
@@ -773,6 +826,60 @@
             this.listViewAppointments.View = System.Windows.Forms.View.Details;
             this.listViewAppointments.SelectedIndexChanged += new System.EventHandler(this.listViewAppointments_SelectedIndexChanged);
             // 
+            // AppointmentID
+            // 
+            this.AppointmentID.Text = "ID";
+            this.AppointmentID.Width = 38;
+            // 
+            // appointmentCustomer
+            // 
+            this.appointmentCustomer.Text = "Customer";
+            this.appointmentCustomer.Width = 118;
+            // 
+            // appointmentUser
+            // 
+            this.appointmentUser.Text = "User";
+            // 
+            // appointmentTitle
+            // 
+            this.appointmentTitle.Text = "Title";
+            this.appointmentTitle.Width = 137;
+            // 
+            // appointmentDescription
+            // 
+            this.appointmentDescription.Text = "Description";
+            this.appointmentDescription.Width = 160;
+            // 
+            // appointmentLocation
+            // 
+            this.appointmentLocation.Text = "Location";
+            this.appointmentLocation.Width = 152;
+            // 
+            // appointmentContact
+            // 
+            this.appointmentContact.Text = "Contact";
+            this.appointmentContact.Width = 133;
+            // 
+            // appointmentType
+            // 
+            this.appointmentType.Text = "Type";
+            this.appointmentType.Width = 116;
+            // 
+            // appointmentURL
+            // 
+            this.appointmentURL.Text = "URL";
+            this.appointmentURL.Width = 92;
+            // 
+            // appointmentStart
+            // 
+            this.appointmentStart.Text = "Start";
+            this.appointmentStart.Width = 108;
+            // 
+            // appointmentEnd
+            // 
+            this.appointmentEnd.Text = "End";
+            this.appointmentEnd.Width = 83;
+            // 
             // labelAppointmentList
             // 
             this.labelAppointmentList.AutoSize = true;
@@ -798,12 +905,82 @@
             // 
             // listViewAppointmentsCalendar
             // 
+            this.listViewAppointmentsCalendar.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1,
+            this.columnHeader2,
+            this.columnHeader3,
+            this.columnHeader4,
+            this.columnHeader5,
+            this.columnHeader6,
+            this.columnHeader7,
+            this.columnHeader8,
+            this.columnHeader9,
+            this.columnHeader10,
+            this.columnHeader11});
+            this.listViewAppointmentsCalendar.FullRowSelect = true;
+            this.listViewAppointmentsCalendar.GridLines = true;
             this.listViewAppointmentsCalendar.HideSelection = false;
-            this.listViewAppointmentsCalendar.Location = new System.Drawing.Point(7, 316);
+            this.listViewAppointmentsCalendar.Location = new System.Drawing.Point(3, 291);
             this.listViewAppointmentsCalendar.Name = "listViewAppointmentsCalendar";
-            this.listViewAppointmentsCalendar.Size = new System.Drawing.Size(1112, 452);
+            this.listViewAppointmentsCalendar.Size = new System.Drawing.Size(1113, 495);
+            this.listViewAppointmentsCalendar.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.listViewAppointmentsCalendar.TabIndex = 6;
             this.listViewAppointmentsCalendar.UseCompatibleStateImageBehavior = false;
+            this.listViewAppointmentsCalendar.View = System.Windows.Forms.View.Details;
+            // 
+            // columnHeader1
+            // 
+            this.columnHeader1.Text = "ID";
+            this.columnHeader1.Width = 38;
+            // 
+            // columnHeader2
+            // 
+            this.columnHeader2.Text = "Customer";
+            this.columnHeader2.Width = 118;
+            // 
+            // columnHeader3
+            // 
+            this.columnHeader3.Text = "User";
+            // 
+            // columnHeader4
+            // 
+            this.columnHeader4.Text = "Title";
+            this.columnHeader4.Width = 137;
+            // 
+            // columnHeader5
+            // 
+            this.columnHeader5.Text = "Description";
+            this.columnHeader5.Width = 160;
+            // 
+            // columnHeader6
+            // 
+            this.columnHeader6.Text = "Location";
+            this.columnHeader6.Width = 152;
+            // 
+            // columnHeader7
+            // 
+            this.columnHeader7.Text = "Contact";
+            this.columnHeader7.Width = 133;
+            // 
+            // columnHeader8
+            // 
+            this.columnHeader8.Text = "Type";
+            this.columnHeader8.Width = 116;
+            // 
+            // columnHeader9
+            // 
+            this.columnHeader9.Text = "URL";
+            this.columnHeader9.Width = 92;
+            // 
+            // columnHeader10
+            // 
+            this.columnHeader10.Text = "Start";
+            this.columnHeader10.Width = 108;
+            // 
+            // columnHeader11
+            // 
+            this.columnHeader11.Text = "End";
+            this.columnHeader11.Width = 83;
             // 
             // monthCalendar
             // 
@@ -879,6 +1056,7 @@
             this.buttonGenerateReport.TabIndex = 6;
             this.buttonGenerateReport.Text = "Generate";
             this.buttonGenerateReport.UseVisualStyleBackColor = true;
+            this.buttonGenerateReport.Click += new System.EventHandler(this.buttonGenerateReport_Click);
             // 
             // comboBoxReportSelection
             // 
@@ -904,109 +1082,16 @@
             // 
             // dataGridViewReport
             // 
+            this.dataGridViewReport.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.DisplayedCells;
             this.dataGridViewReport.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewReport.Location = new System.Drawing.Point(36, 96);
             this.dataGridViewReport.Name = "dataGridViewReport";
+            this.dataGridViewReport.ReadOnly = true;
+            this.dataGridViewReport.RowHeadersVisible = false;
             this.dataGridViewReport.RowHeadersWidth = 51;
             this.dataGridViewReport.RowTemplate.Height = 24;
             this.dataGridViewReport.Size = new System.Drawing.Size(1056, 690);
             this.dataGridViewReport.TabIndex = 0;
-            // 
-            // textBoxPostalCode2
-            // 
-            this.textBoxPostalCode2.Location = new System.Drawing.Point(642, 142);
-            this.textBoxPostalCode2.Name = "textBoxPostalCode2";
-            this.textBoxPostalCode2.Size = new System.Drawing.Size(124, 22);
-            this.textBoxPostalCode2.TabIndex = 21;
-            // 
-            // labelPostalCode2
-            // 
-            this.labelPostalCode2.AutoSize = true;
-            this.labelPostalCode2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelPostalCode2.Location = new System.Drawing.Point(571, 140);
-            this.labelPostalCode2.Name = "labelPostalCode2";
-            this.labelPostalCode2.Size = new System.Drawing.Size(65, 22);
-            this.labelPostalCode2.TabIndex = 20;
-            this.labelPostalCode2.Text = "Postal:";
-            // 
-            // textBoxPostalCode1
-            // 
-            this.textBoxPostalCode1.Location = new System.Drawing.Point(433, 138);
-            this.textBoxPostalCode1.Name = "textBoxPostalCode1";
-            this.textBoxPostalCode1.Size = new System.Drawing.Size(119, 22);
-            this.textBoxPostalCode1.TabIndex = 19;
-            // 
-            // labelPostalCode1
-            // 
-            this.labelPostalCode1.AutoSize = true;
-            this.labelPostalCode1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelPostalCode1.Location = new System.Drawing.Point(370, 138);
-            this.labelPostalCode1.Name = "labelPostalCode1";
-            this.labelPostalCode1.Size = new System.Drawing.Size(65, 22);
-            this.labelPostalCode1.TabIndex = 18;
-            this.labelPostalCode1.Text = "Postal:";
-            // 
-            // Address1PostalCode
-            // 
-            this.Address1PostalCode.Text = "Postal Code";
-            // 
-            // Address2PostalCode
-            // 
-            this.Address2PostalCode.Text = "Postal Code";
-            // 
-            // AppointmentID
-            // 
-            this.AppointmentID.Text = "ID";
-            this.AppointmentID.Width = 38;
-            // 
-            // appointmentCustomer
-            // 
-            this.appointmentCustomer.Text = "Customer";
-            this.appointmentCustomer.Width = 118;
-            // 
-            // appointmentTitle
-            // 
-            this.appointmentTitle.Text = "Title";
-            this.appointmentTitle.Width = 137;
-            // 
-            // appointmentDescription
-            // 
-            this.appointmentDescription.Text = "Description";
-            this.appointmentDescription.Width = 160;
-            // 
-            // appointmentLocation
-            // 
-            this.appointmentLocation.Text = "Location";
-            this.appointmentLocation.Width = 152;
-            // 
-            // appointmentContact
-            // 
-            this.appointmentContact.Text = "Contact";
-            this.appointmentContact.Width = 133;
-            // 
-            // appointmentType
-            // 
-            this.appointmentType.Text = "Type";
-            this.appointmentType.Width = 116;
-            // 
-            // appointmentURL
-            // 
-            this.appointmentURL.Text = "URL";
-            this.appointmentURL.Width = 92;
-            // 
-            // appointmentStart
-            // 
-            this.appointmentStart.Text = "Start";
-            this.appointmentStart.Width = 108;
-            // 
-            // appointmentEnd
-            // 
-            this.appointmentEnd.Text = "End";
-            this.appointmentEnd.Width = 83;
-            // 
-            // appointmentUser
-            // 
-            this.appointmentUser.Text = "User";
             // 
             // MainForm
             // 
@@ -1095,7 +1180,6 @@
         private System.Windows.Forms.GroupBox groupBoxViewSelection;
         private System.Windows.Forms.RadioButton radioButtonWeekView;
         private System.Windows.Forms.RadioButton radioButtonMonthView;
-        private System.Windows.Forms.ListView listViewAppointmentsCalendar;
         private System.Windows.Forms.MonthCalendar monthCalendar;
         private System.Windows.Forms.DataGridView dataGridViewReport;
         private System.Windows.Forms.Button buttonGenerateReport;
@@ -1140,5 +1224,17 @@
         private System.Windows.Forms.ColumnHeader appointmentStart;
         private System.Windows.Forms.ColumnHeader appointmentEnd;
         private System.Windows.Forms.ColumnHeader appointmentUser;
+        private System.Windows.Forms.ListView listViewAppointmentsCalendar;
+        private System.Windows.Forms.ColumnHeader columnHeader1;
+        private System.Windows.Forms.ColumnHeader columnHeader2;
+        private System.Windows.Forms.ColumnHeader columnHeader3;
+        private System.Windows.Forms.ColumnHeader columnHeader4;
+        private System.Windows.Forms.ColumnHeader columnHeader5;
+        private System.Windows.Forms.ColumnHeader columnHeader6;
+        private System.Windows.Forms.ColumnHeader columnHeader7;
+        private System.Windows.Forms.ColumnHeader columnHeader8;
+        private System.Windows.Forms.ColumnHeader columnHeader9;
+        private System.Windows.Forms.ColumnHeader columnHeader10;
+        private System.Windows.Forms.ColumnHeader columnHeader11;
     }
 }
