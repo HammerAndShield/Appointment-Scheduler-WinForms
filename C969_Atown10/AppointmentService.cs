@@ -42,7 +42,8 @@ namespace C969_Atown10
 
             return appointments.Any(a => // Using a lambda function here with the linq "Any" method is the quickest way to search through the Appointments list.
                 (newAppointment.Start >= a.Start && newAppointment.Start < a.End) || // Using a lambda here allows us to quickly iterate through the list without having to write a loop.
-                (newAppointment.End > a.Start && newAppointment.End <= a.End)); 
+                (newAppointment.End > a.Start && newAppointment.End <= a.End) ||
+                (newAppointment.Start < a.Start && newAppointment.End > a.End));
         }
 
         private bool HasOverlappingAppointments(Appointment newAppointment, int updatingAppointmentId = -1)
@@ -53,7 +54,8 @@ namespace C969_Atown10
 
             return appointments.Any(a =>
                 (newAppointment.Start >= a.Start && newAppointment.Start < a.End) ||
-                (newAppointment.End > a.Start && newAppointment.End <= a.End));
+                (newAppointment.End > a.Start && newAppointment.End <= a.End) ||
+                (newAppointment.Start < a.Start && newAppointment.End > a.End));
         }
 
         private bool CustomerExists(Customer customer)
@@ -290,39 +292,26 @@ namespace C969_Atown10
             }
         }
 
-        public Dictionary<string, int> GetAppointmentTypesByMonth(DateTime month)
+        public Dictionary<string, int> GetAllAppointmentTypesByMonth()
         {
-            var appointments = GetAllAppointments()
-                .Where(a => a.Start.Month == month.Month && a.Start.Year == month.Year);
+            var appointments = GetAllAppointments();
 
             return appointments
-                .GroupBy(a => $"{CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(a.Start.Month)} {a.Type}")
+                .GroupBy(a => $"{a.Start.Year} {CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(a.Start.Month)} {a.Type}")
                 .ToDictionary(g => g.Key, g => g.Count());
         }
 
-        public Dictionary<string, List<string>> GetConsultantSchedules()
+        public List<string> GetConsultantSchedules(string consultantName)
         {
             var allAppointments = GetAllAppointments();
-            var consultantAppointments = new Dictionary<string, List<string>>();
+            var consultantAppointments = allAppointments
+                .Where(a => a.Contact == consultantName)
+                .OrderBy(a => a.Start)
+                .ToList();
 
-            var users = _userService.GetAllUsers();
-
-            foreach (var user in users)
-            {
-                var userAppointments = allAppointments
-                    .Where(a => a.User.Id == user.Id)
-                    .OrderBy(a => a.Start)
-                    .ToList();
-
-                if (userAppointments.Any())
-                {
-                    consultantAppointments[user.UserName] = userAppointments.Select(a =>
-                        $"Date: {a.Start}, Customer: {a.Customer.CustomerName}, Title: {a.Type}, Location: {a.Location}")
-                    .ToList();
-                }
-            }
-
-            return consultantAppointments;
+            return consultantAppointments.Select(a =>
+                $"Date: {a.Start.ToLocalTime()}, User: {a.User.UserName}, Customer: {a.Customer.CustomerName}, Title: {a.Type}, Location: {a.Location}")
+                .ToList();
         }
 
 
@@ -336,6 +325,10 @@ namespace C969_Atown10
             return customerStatistics;
         }
 
+        public List<string> GetUniqueConsultantNames()
+        {
+            return GetAllAppointments().Select(a => a.Contact).Distinct().ToList();
+        }
 
     }
 }

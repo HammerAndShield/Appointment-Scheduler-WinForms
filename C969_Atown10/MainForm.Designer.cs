@@ -134,6 +134,9 @@
             this.comboBoxReportSelection = new System.Windows.Forms.ComboBox();
             this.labelReports = new System.Windows.Forms.Label();
             this.dataGridViewReport = new System.Windows.Forms.DataGridView();
+            this.label1 = new System.Windows.Forms.Label();
+            this.comboBoxConsultantFilter = new System.Windows.Forms.ComboBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.tabControlMain.SuspendLayout();
             this.tabPageCustomers.SuspendLayout();
             this.groupBoxCustomerActions.SuspendLayout();
@@ -1037,6 +1040,9 @@
             // 
             // tabPageReports
             // 
+            this.tabPageReports.Controls.Add(this.label2);
+            this.tabPageReports.Controls.Add(this.comboBoxConsultantFilter);
+            this.tabPageReports.Controls.Add(this.label1);
             this.tabPageReports.Controls.Add(this.buttonGenerateReport);
             this.tabPageReports.Controls.Add(this.comboBoxReportSelection);
             this.tabPageReports.Controls.Add(this.labelReports);
@@ -1050,7 +1056,7 @@
             // 
             // buttonGenerateReport
             // 
-            this.buttonGenerateReport.Location = new System.Drawing.Point(669, 40);
+            this.buttonGenerateReport.Location = new System.Drawing.Point(669, 12);
             this.buttonGenerateReport.Name = "buttonGenerateReport";
             this.buttonGenerateReport.Size = new System.Drawing.Size(83, 24);
             this.buttonGenerateReport.TabIndex = 6;
@@ -1065,7 +1071,7 @@
             "Appointment Types by Month",
             "Consultant Schedules",
             "Customer Statistics"});
-            this.comboBoxReportSelection.Location = new System.Drawing.Point(406, 40);
+            this.comboBoxReportSelection.Location = new System.Drawing.Point(406, 12);
             this.comboBoxReportSelection.Name = "comboBoxReportSelection";
             this.comboBoxReportSelection.Size = new System.Drawing.Size(257, 24);
             this.comboBoxReportSelection.TabIndex = 5;
@@ -1092,6 +1098,34 @@
             this.dataGridViewReport.RowTemplate.Height = 24;
             this.dataGridViewReport.Size = new System.Drawing.Size(1056, 690);
             this.dataGridViewReport.TabIndex = 0;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(281, 13);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(105, 20);
+            this.label1.TabIndex = 7;
+            this.label1.Text = "Report Type:";
+            // 
+            // comboBoxConsultantFilter
+            // 
+            this.comboBoxConsultantFilter.FormattingEnabled = true;
+            this.comboBoxConsultantFilter.Location = new System.Drawing.Point(406, 52);
+            this.comboBoxConsultantFilter.Name = "comboBoxConsultantFilter";
+            this.comboBoxConsultantFilter.Size = new System.Drawing.Size(257, 24);
+            this.comboBoxConsultantFilter.TabIndex = 8;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(249, 52);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(137, 20);
+            this.label2.TabIndex = 9;
+            this.label2.Text = "Consultant Filter:";
             // 
             // MainForm
             // 
@@ -1236,5 +1270,8 @@
         private System.Windows.Forms.ColumnHeader columnHeader9;
         private System.Windows.Forms.ColumnHeader columnHeader10;
         private System.Windows.Forms.ColumnHeader columnHeader11;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.ComboBox comboBoxConsultantFilter;
+        private System.Windows.Forms.Label label1;
     }
 }

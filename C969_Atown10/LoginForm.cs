@@ -55,6 +55,11 @@ namespace C969_Atown10
             }
             catch (Exception ex)
             {
+                using (StreamWriter sw = new StreamWriter(logFilePath, append: true))
+                {
+                    sw.WriteLine($"{DateTime.UtcNow}: Login attempt failed for username: {userName}.");
+                }
+
                 // Default English error message
                 string errorMessageEng = "The username and password are incorrect.";
                 labelErrorEng.Text = errorMessageEng;

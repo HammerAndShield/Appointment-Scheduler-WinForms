@@ -38,6 +38,7 @@ namespace C969_Atown10
             UpdateAppointmentView();
             radioButtonMonthView.Checked = true;
             CheckUpcomingAppointments();
+            comboBoxConsultantFilter.Items.AddRange(_appointmentService.GetUniqueConsultantNames().ToArray());
         }
 
         private void PopulateCustomerListView()
@@ -439,29 +440,37 @@ namespace C969_Atown10
         private void buttonGenerateReport_Click(object sender, EventArgs e)
         {
             var reportType = comboBoxReportSelection.SelectedItem.ToString();
-            var appointmentService = new AppointmentService();
 
             switch (reportType)
             {
                 case "Appointment Types by Month":
-                    var appointmentTypesByMonth = appointmentService.GetAppointmentTypesByMonth(DateTime.Now);
-                    var appointmentList = appointmentTypesByMonth.Select(kvp => new
+                    var allAppointmentTypesByMonth = _appointmentService.GetAllAppointmentTypesByMonth();
+                    var appointmentList = allAppointmentTypesByMonth.Select(kvp => new
                     {
-                        Month = kvp.Key.Split(' ')[0],
-                        Type = kvp.Key.Split(' ')[1],
+                        Year = kvp.Key.Split(' ')[0],
+                        Month = kvp.Key.Split(' ')[1],
+                        Type = kvp.Key.Split(' ')[2],
                         Count = kvp.Value
                     }).ToList();
                     BindDataToGrid(appointmentList);
                     break;
 
                 case "Consultant Schedules":
-                    var consultantSchedules = appointmentService.GetConsultantSchedules();
-                    var schedulesList = consultantSchedules.SelectMany(kvp => kvp.Value.Select(appt => new { Consultant = kvp.Key, AppointmentDetails = appt })).ToList();
-                    BindDataToGrid(schedulesList);
+                    if (comboBoxConsultantFilter.SelectedItem != null)
+                    {
+                        var consultantName = comboBoxConsultantFilter.SelectedItem.ToString();
+                        var consultantSchedules = _appointmentService.GetConsultantSchedules(consultantName);
+                        var schedulesList = consultantSchedules.Select((appt, index) => new { Consultant = consultantName, AppointmentDetails = appt }).ToList();
+                        BindDataToGrid(schedulesList);
+                    }
+                    else if (comboBoxConsultantFilter.SelectedItem == null) 
+                    {
+                        MessageBox.Show("Please select a consultant from the filter.");
+                    }
                     break;
 
                 case "Customer Statistics":
-                    var customerStatistics = appointmentService.GetCustomerStatistics();
+                    var customerStatistics = _appointmentService.GetCustomerStatistics();
                     var customerList = customerStatistics.Select(kvp => new
                     {
                         Customer = kvp.Key,
