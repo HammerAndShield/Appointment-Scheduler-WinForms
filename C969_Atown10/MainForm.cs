@@ -298,6 +298,7 @@ namespace C969_Atown10
                 _appointmentService.AddAppointment(appointment);
 
                 PopulateAppointmentListView();
+                UpdateConsultantFilter();
             }
             catch (Exception exception)
             {
@@ -334,6 +335,7 @@ namespace C969_Atown10
                     _appointmentService.UpdateAppointment(appointment);
 
                     PopulateAppointmentListView();
+                    UpdateConsultantFilter();
                 }
                 catch (Exception exception)
                 {
@@ -498,6 +500,15 @@ namespace C969_Atown10
 
                 MessageBox.Show($"You have the following appointments coming up in the next 15 minutes: {Environment.NewLine}{message}");
             }
+        }
+
+        private void UpdateConsultantFilter()
+        {
+            var allAppointments = _appointmentService.GetAllAppointments();
+            var uniqueContacts = allAppointments.Select(a => a.Contact).Distinct().ToList();
+
+            comboBoxConsultantFilter.DataSource = uniqueContacts;
+            comboBoxConsultantFilter.SelectedItem = null;
         }
 
         private void tabControl1_SelectedIndexChanged(object sender, EventArgs e)
